@@ -74,17 +74,31 @@ jobs:
             2>&1 | tee /tmp/proofer.log
 
       # O resumo aparece na página do run e é o que você lê antes de aprovar.
+      #
+      # O commit vem de `git log`, e não de github.event.head_commit, porque
+      # aquele campo só existe em execuções disparadas por push — ficaria vazio
+      # quando o workflow é acionado à mão pelo Run workflow.
       - name: Resumo do build
         if: always()
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          COMMIT_SHA=$(git log -1 --pretty=%h)
+          COMMIT_WHO=$(git log -1 --pretty=%an)
+          COMMIT_WHEN=$(git log -1 --date=format:'%d/%m/%Y %H:%M' --pretty=%ad)
           {
-            echo "## Site compilado"
+            echo "## $COMMIT_MSG"
             echo
-            echo "| | |"
-            echo "|---|---|"
+            echo "\`$COMMIT_SHA\` · $COMMIT_WHO · $COMMIT_WHEN"
+            echo
+            echo "### Site compilado"
+            echo
+            echo "| Item | Valor |"
+            echo "|:--|--:|"
             echo "| Páginas HTML | $(find _site -name '*.html' | wc -l) |"
-            echo "| Tamanho | $(du -sh _site | cut -f1) |"
             echo "| Seminários | $(find _site -path '*seminars*' -name '*.html' | wc -l) |"
+            echo "| Publicações do grupo | $(grep -c '<li data-kind=' _site/research/publications/index.html 2>/dev/null || echo '—') |"
+            echo "| Membros listados | $(grep -c 'class=\"member\"' _site/members/index.html 2>/dev/null || echo '—') |"
+            echo "| Tamanho | $(du -sh _site | cut -f1) |"
             echo "| Verificação de links | ${{ steps.proofer.outcome }} |"
             echo
             if [ "${{ steps.proofer.outcome }}" != "success" ]; then
