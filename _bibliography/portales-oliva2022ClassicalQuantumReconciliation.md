@@ -13,4 +13,7 @@ date: 2022-09-06
 doi: 10.1103/PhysRevD.106.065002
 arxiv: '2205.15183'
 arxivclass: gr-qc
+keywords:
+    - unruh
+    - acceleration-radiation
 ---

@@ -1,0 +1,175 @@
+{%- comment -%}
+Grade termo × ano da produção do grupo.
+
+Cada linha é um termo do vocabulário em _data/keywords.yml; cada coluna, um ano.
+A intensidade da célula indica quantos trabalhos daquele ano usam o termo.
+Clicar num termo — ou numa célula — lista os trabalhos correspondentes abaixo.
+
+Sem JavaScript, a grade continua legível como tabela e a lista completa aparece
+embaixo: nenhum conteúdo depende do script para existir.
+
+Não usa D3. Para ~30 trabalhos e ~18 anos, uma grade CSS é mais leve, acessível
+por teclado e não acrescenta dependência externa.
+{%- endcomment -%}
+
+{%- assign pubs = site.bibliography | where_exp: 'p', 'p.group' | where_exp: 'p', 'p.date' -%}
+{%- assign vocab = site.data.keywords -%}
+
+{%- comment -%} Intervalo de anos coberto pelo acervo. {%- endcomment -%}
+{%- assign years = '' | split: '' -%}
+{%- for p in pubs -%}
+  {%- assign y = p.date | date: '%Y' -%}
+  {%- unless years contains y -%}{%- assign years = years | push: y -%}{%- endunless -%}
+{%- endfor -%}
+{%- assign years = years | sort -%}
+
+<div class="kw" id="kw">
+  <div class="kw-scroll">
+    <table class="kw-grid">
+      <caption class="sr-only">Number of works per keyword and year</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="kw-corner">Keyword</th>
+          {%- for y in years %}
+          <th scope="col" class="kw-year"><span>{{ y }}</span></th>
+          {%- endfor %}
+          <th scope="col" class="kw-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- comment -%}
+          Ordena as linhas do termo mais frequente para o menos. O Liquid não
+          ordena lista de objetos por valor calculado, então monta-se uma lista
+          de textos "TOTAL|id" — com o total preenchido a três dígitos, para a
+          ordenação alfabética coincidir com a numérica — e ordena-se essa.
+        {%- endcomment -%}
+        {%- assign rows = '' | split: '' -%}
+        {%- for term in vocab -%}
+          {%- assign hits = pubs | where_exp: 'p', 'p.keywords contains term.id' -%}
+          {%- if hits.size > 0 -%}
+            {%- assign padded = hits.size | prepend: '000' | slice: -3, 3 -%}
+            {%- capture row -%}{{ padded }}|{{ term.id }}{%- endcapture -%}
+            {%- assign rows = rows | push: row -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign rows = rows | sort | reverse -%}
+
+        {%- for row in rows -%}
+          {%- assign parts = row | split: '|' -%}
+          {%- assign term = vocab | where: 'id', parts[1] | first -%}
+          {%- assign hits = pubs | where_exp: 'p', 'p.keywords contains term.id' -%}
+          {%- comment -%}
+            Os anos dos trabalhos deste termo, como texto. Contar assim, e não
+            com `where_exp` sobre `p.date`, porque no Liquid `date` é objeto e
+            `contains` só opera sobre texto e listas — a comparação silenciosa
+            devolveria zero em toda célula.
+          {%- endcomment -%}
+          {%- capture hit_years -%}
+            {%- for h in hits %}{{ h.date | date: '%Y' }} {% endfor -%}
+          {%- endcapture -%}
+          {%- assign hit_years = hit_years | split: ' ' %}
+        <tr>
+          <th scope="row" class="kw-name">
+            <button type="button" class="kw-term" data-term="{{ term.id }}"
+                    aria-pressed="false">{{ term.label }}</button>
+          </th>
+          {%- for y in years -%}
+            {%- assign n = 0 -%}
+            {%- for hy in hit_years -%}
+              {%- if hy == y -%}{%- assign n = n | plus: 1 -%}{%- endif -%}
+            {%- endfor %}
+          <td class="kw-cell">
+            {%- if n > 0 -%}
+            <button type="button" class="kw-dot" data-term="{{ term.id }}" data-year="{{ y }}"
+                    data-n="{{ n }}" style="--n: {{ n }}"
+                    title="{{ term.label }} · {{ y }} · {{ n }}"
+                    aria-label="{{ term.label }}, {{ y }}, {{ n }} works">{{ n }}</button>
+            {%- endif -%}
+          </td>
+          {%- endfor %}
+          <td class="kw-total">{{ hits.size }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="kw-status" id="kw-status" hidden></p>
+
+  <ul class="biblist kw-results" id="kw-results">
+    {%- assign ordered = pubs | sort: 'date' | reverse -%}
+    {%- for p in ordered -%}
+      {%- assign ks = p.keywords | join: ' ' -%}
+      {%- assign yr = p.date | date: '%Y' %}
+    <li data-terms="{{ ks }}" data-year="{{ yr }}">{% include bibitem.html entry=p %}</li>
+    {%- endfor %}
+  </ul>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('kw');
+    if (!root) return;
+
+    var status  = document.getElementById('kw-status');
+    var items   = root.querySelectorAll('#kw-results > li');
+    var terms   = root.querySelectorAll('.kw-term');
+    var dots    = root.querySelectorAll('.kw-dot');
+    var labels  = {};
+    terms.forEach(function (b) { labels[b.dataset.term] = b.textContent.trim(); });
+
+    var sel = { term: null, year: null };
+
+    function apply() {
+      var shown = 0;
+      items.forEach(function (li) {
+        var okT = !sel.term || (' ' + li.dataset.terms + ' ').indexOf(' ' + sel.term + ' ') !== -1;
+        var okY = !sel.year || li.dataset.year === sel.year;
+        var ok = okT && okY;
+        li.hidden = !ok;
+        if (ok) shown++;
+      });
+
+      terms.forEach(function (b) {
+        var on = b.dataset.term === sel.term;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      dots.forEach(function (d) {
+        d.classList.toggle('is-active',
+          d.dataset.term === sel.term && (!sel.year || d.dataset.year === sel.year));
+        d.classList.toggle('is-dimmed', sel.term !== null && d.dataset.term !== sel.term);
+      });
+
+      if (status) {
+        if (sel.term) {
+          status.hidden = false;
+          status.innerHTML = '<strong>' + shown + '</strong> work' + (shown === 1 ? '' : 's') +
+            ' · ' + labels[sel.term] + (sel.year ? ' · ' + sel.year : '') +
+            ' — <button type="button" class="kw-clear">show all</button>';
+        } else {
+          status.hidden = true;
+        }
+      }
+    }
+
+    function select(term, year) {
+      // Clicar de novo no mesmo termo desfaz a seleção.
+      if (sel.term === term && sel.year === year) { sel = { term: null, year: null }; }
+      else { sel = { term: term, year: year || null }; }
+      apply();
+    }
+
+    terms.forEach(function (b) {
+      b.addEventListener('click', function () { select(b.dataset.term, null); });
+    });
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { select(d.dataset.term, d.dataset.year); });
+    });
+    root.addEventListener('click', function (e) {
+      if (e.target.classList.contains('kw-clear')) { sel = { term: null, year: null }; apply(); }
+    });
+
+    apply();
+  })();
+</script>

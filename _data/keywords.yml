@@ -1,0 +1,67 @@
+# Vocabulário controlado dos termos-chave usados nas publicações.
+#
+# ────────────────────────────────────────────────────────────────────────────
+# POR QUE UM VOCABULÁRIO FECHADO
+#
+# Se cada pessoa escrever a palavra-chave à mão, "black hole", "black holes" e
+# "Black Holes" viram três termos distintos e o mosaico se fragmenta até perder
+# o sentido. Aqui os termos têm um `id` estável; as entradas de _bibliography
+# referenciam o id, e a página exibe o `label`.
+#
+# Um id usado numa publicação e ausente daqui é ERRO — a grade o marca em
+# vermelho, em vez de criar uma linha nova silenciosamente.
+#
+# Para renomear um termo na tela, mude só o `label`. Para renomear o id, é
+# preciso atualizar as entradas que o usam.
+# ────────────────────────────────────────────────────────────────────────────
+
+- id: unruh
+  label: Unruh effect
+- id: acceleration-radiation
+  label: Acceleration and radiation
+- id: qftcs
+  label: QFT in curved spacetimes
+- id: rqi
+  label: Relativistic quantum information
+- id: quantum-channels
+  label: Quantum channels
+- id: entanglement
+  label: Entanglement
+- id: particle-detectors
+  label: Particle detectors
+- id: quantum-clocks
+  label: Quantum clocks
+- id: black-holes
+  label: Black holes
+- id: information-paradox
+  label: Information paradox
+- id: generalized-entropy
+  label: Generalized entropy
+- id: energy-conditions
+  label: Energy conditions
+- id: entanglement-entropy
+  label: Entanglement entropy
+- id: renormalization
+  label: Renormalization group
+- id: asymptotic-symmetries
+  label: Asymptotic symmetries
+- id: bms
+  label: BMS group
+- id: memory-effect
+  label: Memory effect
+- id: horizons
+  label: Horizons
+- id: vacuum-instability
+  label: Vacuum instability
+- id: particle-creation
+  label: Particle creation
+- id: relativistic-stars
+  label: Relativistic stars and compact objects
+- id: neutrinos
+  label: Neutrinos
+- id: analogue-gravity
+  label: Analogue gravity
+- id: semiclassical-gravity
+  label: Semiclassical gravity
+- id: outreach
+  label: Outreach

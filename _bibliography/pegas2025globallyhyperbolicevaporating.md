@@ -14,4 +14,8 @@ date: 2025-02-27
 doi: 10.1088/1361-6382/adb534
 arxiv: '2402.19140'
 arxivclass: gr-qc
+keywords:
+    - black-holes
+    - information-paradox
+    - qftcs
 ---

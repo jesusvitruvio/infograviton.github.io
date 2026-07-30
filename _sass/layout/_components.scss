@@ -256,6 +256,170 @@
 
 .backlink { margin-top: 3rem; font-size: .85rem; }
 
+/* ---------- Grade termo × ano ---------- */
+
+/* Ocupa a largura cheia, não a medida de leitura: são ~18 colunas de anos. */
+.kw { margin: 0 0 2.5rem; }
+
+.kw-scroll {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    /* Sombra sutil indicando que há mais conteúdo à direita, em telas estreitas */
+    background:
+        linear-gradient(to right, var(--bg) 30%, transparent),
+        linear-gradient(to left, var(--bg) 30%, transparent) 100% 0;
+    background-size: 3rem 100%, 3rem 100%;
+    background-repeat: no-repeat;
+    background-attachment: local, local;
+}
+
+.kw-grid {
+    border-collapse: collapse;
+    font-size: .8rem;
+    margin: 0;
+    width: auto;
+}
+
+.kw-grid th,
+.kw-grid td {
+    border: 0;
+    padding: 0;
+}
+
+.kw-corner {
+    text-align: left;
+    font-weight: 400;
+    color: var(--text-faint);
+    padding: 0 .75rem .4rem 0;
+    position: sticky;
+    left: 0;
+    background: var(--bg);
+    z-index: 1;
+}
+
+.kw-year {
+    font-weight: 400;
+    color: var(--text-faint);
+    font-size: .7rem;
+    padding: 0 0 .4rem;
+    width: 1.9rem;
+    min-width: 1.9rem;
+    text-align: center;
+}
+
+/* Anos na vertical: cabem 18 colunas sem esticar a tabela. */
+.kw-year span {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+.kw-name {
+    text-align: left;
+    font-weight: 400;
+    padding: 0 .75rem 0 0;
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    background: var(--bg);
+    z-index: 1;
+}
+
+.kw-term {
+    font: inherit;
+    font-size: .82rem;
+    color: var(--text-muted);
+    background: none;
+    border: 0;
+    padding: .18rem 0;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid transparent;
+}
+
+.kw-term:hover { color: var(--accent); }
+
+.kw-term.is-active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.kw-cell {
+    width: 1.9rem;
+    min-width: 1.9rem;
+    height: 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* A opacidade cresce com o número de trabalhos naquele ano. */
+.kw-dot {
+    display: block;
+    width: 1.5rem;
+    height: 1.35rem;
+    margin: 0 auto;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    font: inherit;
+    font-size: .68rem;
+    line-height: 1.35rem;
+    color: transparent;
+    background-color: var(--accent);
+    opacity: calc(0.30 + 0.28 * var(--n, 1));
+    transition: opacity .15s ease, outline-color .15s ease;
+}
+
+.kw-dot:hover,
+.kw-dot.is-active {
+    opacity: 1;
+    color: var(--bg);
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.kw-dot.is-dimmed { opacity: .12; }
+
+.kw-total {
+    font-size: .72rem;
+    color: var(--text-faint);
+    text-align: right;
+    padding-left: .6rem;
+    min-width: 2rem;
+}
+
+.kw-status {
+    margin: 0 0 1rem;
+    font-size: .85rem;
+    color: var(--text-muted);
+}
+
+.kw-clear {
+    font: inherit;
+    font-size: inherit;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.kw-results { max-width: var(--measure); }
+
+/* Só para leitores de tela */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ---------- Publicações ---------- */
 
 /* Seletor de tipo. Fica oculto até o JS habilitá-lo: sem script, a lista

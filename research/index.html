@@ -1,18 +1,14 @@
 ---
 layout: default
-title: Research branches
+title: Branches
 description: Research lines of the group on quantum gravitation and information.
 ---
 
 <div class="prose">
-  <p>Our work is organised along five overlapping branches. They share a common
-  question: what does quantum theory tell us about spacetime, and what does
-  spacetime tell us about quantum theory?</p>
+  <p>What the group has actually worked on, year by year. Each row is a keyword
+  and each column a year; the darker the cell, the more work published on that
+  topic that year. Select a keyword — or a single cell — to list the
+  corresponding works below.</p>
 </div>
 
-{% for line in site.data.research %}
-<section class="research-line" id="{{ line.id }}">
-  <h2>{{ line.title }}</h2>
-  <p>{{ line.body }}</p>
-</section>
-{% endfor %}
+{% include keyword_grid.html %}

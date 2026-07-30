@@ -202,6 +202,7 @@ inválido** — veja [Armadilhas conhecidas](#armadilhas-conhecidas).
 ├── _data/                   ← DADOS: edite aqui, não no HTML
 │   ├── members.yml            todas as pessoas, atuais e egressas
 │   ├── research.yml           as 5 linhas de pesquisa
+│   ├── keywords.yml           vocabulário controlado dos termos-chave
 │   └── strings.yml            rótulos de interface, rotas e títulos
 │
 ├── _layouts/                ← MOLDES de página inteira
@@ -214,6 +215,7 @@ inválido** — veja [Armadilhas conhecidas](#armadilhas-conhecidas).
 │   ├── alumnus_row.html       linha compacta de egresso
 │   ├── publication_list.html  publicações agrupadas por ano
 │   ├── teaching_list.html     disciplinas ou notas de aula (course/notes)
+│   ├── keyword_grid.html      grade termo × ano, com filtro por clique
 │   ├── include_seminar.html   um item na lista de seminários
 │   ├── bibitem.html           uma referência bibliográfica formatada
 │   ├── source.html            formatação por tipo (artigo, livro, tese...)
@@ -439,6 +441,44 @@ Publicações. O agrupamento é por ano, decrescente; entradas com
 > **Detalhe que já causou bug:** não filtre publicações por "data ausente". O
 > Jekyll atribui `site.time` a documentos de coleção sem data, então o teste
 > nunca dá verdadeiro. O critério confiável é o `pubstate`.
+
+### A grade de termos × ano
+
+A página **Branches** termina com uma grade: cada linha é um termo-chave, cada
+coluna um ano, e a intensidade da célula indica quantos trabalhos daquele ano
+tocam o tema. Clicar num termo — ou numa célula — lista os trabalhos abaixo.
+
+Os termos vivem num **vocabulário fechado**, em `_data/keywords.yml`:
+
+```yaml
+- id: unruh
+  label: Unruh effect
+```
+
+As publicações referenciam o `id`:
+
+```yaml
+keywords:
+    - unruh
+    - acceleration-radiation
+```
+
+O vocabulário fechado existe por um motivo prático: se cada pessoa escrevesse a
+palavra-chave à mão, "black hole", "black holes" e "Black Holes" virariam três
+linhas distintas e a grade perderia o sentido. Para renomear um termo na tela,
+mude só o `label`; o `id` é o que amarra as entradas.
+
+Um termo sem nenhum trabalho não gera linha, e uma publicação sem `keywords`
+simplesmente não aparece na grade — nada quebra nos dois casos.
+
+**Não usa D3.** Para ~30 trabalhos e ~18 anos, uma grade em CSS é mais leve,
+navegável por teclado e não acrescenta dependência externa. Sem JavaScript, a
+grade continua legível como tabela e a lista completa aparece embaixo.
+
+> **Detalhe de Liquid que já causaria bug:** a contagem por ano é feita com um
+> laço explícito, e não com `where_exp: 'p', 'p.date contains y'`. No Liquid,
+> `date` é objeto e `contains` só opera sobre texto e listas — a comparação
+> falharia em silêncio e toda célula viria zerada.
 
 ### O seletor de tipo em Publicações
 

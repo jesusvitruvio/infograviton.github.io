@@ -13,4 +13,8 @@ date: 2021-02-15
 doi: 10.1103/PhysRevD.103.045012
 arxiv: '2008.04951'
 arxivclass: gr-qc
+keywords:
+    - entanglement-entropy
+    - renormalization
+    - black-holes
 ---

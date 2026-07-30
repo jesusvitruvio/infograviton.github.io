@@ -12,4 +12,8 @@ date: 2016-05-09
 doi: 10.1103/PhysRevD.93.104019
 arxiv: '1603.06641'
 arxivclass: gr-qc
+keywords:
+    - rqi
+    - quantum-channels
+    - qftcs
 ---
