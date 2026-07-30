@@ -1,17 +1,28 @@
 name: Build e publicação no GitHub Pages
 
-# Por que um workflow próprio em vez do build automático por branch:
+# ─────────────────────────────────────────────────────────────────────────────
+# COMO ESTE WORKFLOW SE COMPORTA
 #
-# O build clássico do GitHub Pages usa Jekyll 3.10 com Ruby 3.3 e ignora o
-# Gemfile do repositório. Como o desenvolvimento local usa Jekyll 4, haveria
-# duas versões diferentes — e nenhuma garantia de que o site publicado é igual
-# ao que se vê em `jekyll serve`.
+# A cada push na main o site é COMPILADO, mas não vai ao ar sozinho: a etapa de
+# publicação espera aprovação manual. Assim você descobre imediatamente se algo
+# quebrou, sem que o erro chegue ao público.
 #
-# Com este workflow, a produção usa exatamente o Gemfile do repositório. Além
-# disso, deixa de valer a lista fechada de plugins do GitHub Pages: qualquer
-# gem declarada no Gemfile passa a funcionar.
+# O job `build` gera o site e escreve um resumo na aba Actions — número de
+# páginas, tamanho, e o resultado da verificação de links. O job `deploy` fica
+# em "Waiting" até alguém aprovar.
 #
-# Requer, uma única vez: Settings → Pages → Source → "GitHub Actions".
+# CONFIGURAÇÃO NECESSÁRIA, uma única vez:
+#   1. Settings → Pages → Source → "GitHub Actions"
+#   2. Settings → Environments → github-pages → Required reviewers
+#      → marque a caixa e adicione a si mesmo → Save protection rules
+#
+# Sem o passo 2 o site publica direto, como antes.
+#
+# Por que um workflow próprio em vez do build clássico do Pages: aquele usa
+# Jekyll 3.10 e ignora o Gemfile, enquanto o desenvolvimento local usa Jekyll 4.
+# Assim a produção usa exatamente as gems do repositório, e a lista fechada de
+# plugins do Pages deixa de limitar o projeto.
+# ─────────────────────────────────────────────────────────────────────────────
 
 on:
   push:
@@ -30,6 +41,7 @@ concurrency:
 
 jobs:
   build:
+    name: Compilar e verificar
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,13 +63,42 @@ jobs:
           JEKYLL_ENV: production
 
       - name: Verificar links e HTML
-        continue-on-error: true      # informativo: não bloqueia a publicação
+        id: proofer
+        continue-on-error: true
         run: |
           gem install html-proofer -N
           htmlproofer ./_site \
             --disable-external \
             --allow-hash-href \
-            --ignore-empty-alt false
+            --ignore-empty-alt false \
+            2>&1 | tee /tmp/proofer.log
+
+      # O resumo aparece na página do run e é o que você lê antes de aprovar.
+      - name: Resumo do build
+        if: always()
+        run: |
+          {
+            echo "## Site compilado"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Páginas HTML | $(find _site -name '*.html' | wc -l) |"
+            echo "| Tamanho | $(du -sh _site | cut -f1) |"
+            echo "| Seminários | $(find _site -path '*seminars*' -name '*.html' | wc -l) |"
+            echo "| Verificação de links | ${{ steps.proofer.outcome }} |"
+            echo
+            if [ "${{ steps.proofer.outcome }}" != "success" ]; then
+              echo "<details><summary>Problemas encontrados pelo html-proofer</summary>"
+              echo
+              echo '```'
+              tail -40 /tmp/proofer.log 2>/dev/null || echo "(sem log)"
+              echo '```'
+              echo
+              echo "</details>"
+              echo
+            fi
+            echo "Revise e aprove na etapa **Publicar** para o site ir ao ar."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Enviar artefato
         uses: actions/upload-pages-artifact@v3
@@ -65,8 +106,11 @@ jobs:
           path: ./_site
 
   deploy:
+    name: Publicar
     needs: build
     runs-on: ubuntu-latest
+    # A proteção do environment `github-pages` é o que segura este job até a
+    # aprovação. Ela é configurada na interface do GitHub, não aqui.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

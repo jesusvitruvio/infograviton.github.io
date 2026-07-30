@@ -740,7 +740,38 @@ local usa Jekyll 4. Com o workflow, a produção instala exatamente as gems do
 [lista fechada de plugins](https://pages.github.com/versions/) do Pages deixa de
 limitar o projeto.
 
-Pré-requisito, uma única vez: **Settings → Pages → Source → GitHub Actions**.
+### O push compila; a publicação espera aprovação
+
+Um push na `main` **não** coloca o site no ar sozinho. O workflow tem dois
+jobs, e só o primeiro roda automaticamente:
+
+**Compilar e verificar** roda sempre. Gera o site, passa o `html-proofer` nos
+links internos e escreve um resumo na página do run — quantas páginas saíram,
+o tamanho, quantos seminários, e os problemas encontrados. É o que você lê para
+decidir.
+
+**Publicar** fica em *Waiting* até alguém aprovar, na própria página do run
+(botão **Review deployments**). Você recebe notificação do GitHub quando há
+algo esperando.
+
+O efeito prático é que um erro de sintaxe ou um link quebrado aparece para você
+antes de aparecer para o público, sem tirar de você a liberdade de dar push
+quantas vezes quiser.
+
+### Configuração, uma única vez
+
+1. **Settings → Pages → Source** → escolha **GitHub Actions**.
+2. **Settings → Environments → github-pages → Required reviewers** → marque a
+   caixa, adicione a si mesmo (e quem mais puder aprovar) → **Save protection
+   rules**.
+
+O passo 2 é o que cria o portão. Sem ele o site publica direto a cada push, que
+era o comportamento anterior. A proteção de environment é gratuita em
+repositórios públicos.
+
+Para reverter ao automático, basta remover os revisores exigidos — nada muda no
+workflow. E para publicar sem push, use **Actions → Build e publicação → Run
+workflow**.
 
 ### Sobre a URL
 
