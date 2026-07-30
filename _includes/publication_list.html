@@ -1,38 +1,132 @@
 {%- comment -%}
-Lista as publicações do grupo: entradas de _bibliography marcadas com `group: true`.
-Agrupa por ano, em ordem decrescente; trabalhos com `pubstate: inpreparation`
-aparecem ao final, numa seção própria.
+Lista a produção escrita do grupo: entradas de _bibliography marcadas com
+`group: true`. Artigos e teses aparecem juntos, agrupados por ano em ordem
+decrescente. Trabalhos com `pubstate: inpreparation` vão para uma seção própria
+ao final.
 
-Nota: não se filtra por data nula, porque o Jekyll atribui site.time a
+Cada item recebe `data-kind`, usado pelo seletor de tipo no topo da página:
+  article | phd | masters | undergrad  (teses usam o thesis_level)
+
+Nota: não se filtra por data ausente, porque o Jekyll atribui site.time a
 documentos de coleção sem data — o critério confiável é o pubstate.
-
-Parâmetro: lang (en|pt)
 {%- endcomment -%}
-{%- assign t = site.data.i18n[include.lang] -%}
+{%- assign t = site.data.strings -%}
 
 {%- assign giq = site.bibliography | where_exp: 'p', 'p.group' -%}
 {%- assign wip = giq | where: 'pubstate', 'inpreparation' -%}
 {%- assign done = giq | where_exp: 'p', 'p.pubstate != "inpreparation"' | sort: 'date' | reverse -%}
 {%- assign by_year = done | group_by_exp: 'p', 'p.date | date: "%Y"' -%}
 
+{%- comment -%} Contagem por tipo, para rotular e ocultar filtros vazios. {%- endcomment -%}
+{%- assign n_article   = giq | where: 'type', 'article' | size -%}
+{%- assign n_phd       = giq | where: 'thesis_level', 'phd' | size -%}
+{%- assign n_masters   = giq | where: 'thesis_level', 'masters' | size -%}
+{%- assign n_undergrad = giq | where: 'thesis_level', 'undergrad' | size -%}
+
+<div class="pub-filter" id="pub-filter" hidden>
+  <button type="button" class="pub-chip is-active" data-filter="all">
+    {{ t.ui.filter_all }} <span class="pub-count">{{ giq.size }}</span>
+  </button>
+  {%- if n_article > 0 %}
+  <button type="button" class="pub-chip" data-filter="article">
+    {{ t.ui.filter_articles }} <span class="pub-count">{{ n_article }}</span>
+  </button>
+  {%- endif %}
+  {%- if n_phd > 0 %}
+  <button type="button" class="pub-chip" data-filter="phd">
+    {{ t.ui.filter_theses }} <span class="pub-count">{{ n_phd }}</span>
+  </button>
+  {%- endif %}
+  {%- if n_masters > 0 %}
+  <button type="button" class="pub-chip" data-filter="masters">
+    {{ t.ui.filter_dissertations }} <span class="pub-count">{{ n_masters }}</span>
+  </button>
+  {%- endif %}
+  {%- if n_undergrad > 0 %}
+  <button type="button" class="pub-chip" data-filter="undergrad">
+    {{ t.ui.filter_monographs }} <span class="pub-count">{{ n_undergrad }}</span>
+  </button>
+  {%- endif %}
+</div>
+
+<div id="pub-list">
 {%- for group in by_year %}
-<section class="pub-year">
-  <h2>{{ group.name }}</h2>
-  <ul class="biblist">
-    {%- for paper in group.items %}
-    <li>{% include bibitem.html entry=paper %}</li>
-    {%- endfor %}
-  </ul>
-</section>
+  <section class="pub-year">
+    <h2>{{ group.name }}</h2>
+    <ul class="biblist">
+      {%- for paper in group.items -%}
+      {%- assign kind = paper.thesis_level | default: paper.type %}
+      <li data-kind="{{ kind }}">{% include bibitem.html entry=paper %}</li>
+      {%- endfor %}
+    </ul>
+  </section>
 {%- endfor %}
 
 {%- if wip.size > 0 %}
-<section class="pub-year">
-  <h2>{{ t.pubstate.inpreparation }}</h2>
-  <ul class="biblist">
-    {%- for paper in wip %}
-    <li>{% include bibitem.html entry=paper %}</li>
-    {%- endfor %}
-  </ul>
-</section>
-{%- endif -%}
+  <section class="pub-year">
+    <h2>{{ t.pubstate.inpreparation }}</h2>
+    <ul class="biblist">
+      {%- for paper in wip -%}
+      {%- assign kind = paper.thesis_level | default: paper.type %}
+      <li data-kind="{{ kind }}">{% include bibitem.html entry=paper %}</li>
+      {%- endfor %}
+    </ul>
+  </section>
+{%- endif %}
+
+  <p class="pub-empty muted" hidden>{{ t.ui.filter_empty }}</p>
+</div>
+
+<script>
+  (function () {
+    var bar = document.getElementById('pub-filter');
+    var list = document.getElementById('pub-list');
+    if (!bar || !list) return;
+
+    // O seletor só aparece com JS: sem ele, a lista completa continua legível.
+    bar.hidden = false;
+
+    var chips = bar.querySelectorAll('.pub-chip');
+    var items = list.querySelectorAll('.biblist > li');
+    var empty = list.querySelector('.pub-empty');
+    var valid = {};
+    chips.forEach(function (c) { valid[c.dataset.filter] = true; });
+
+    function apply(kind) {
+      if (!valid[kind]) kind = 'all';
+      var shown = 0;
+
+      items.forEach(function (li) {
+        var match = kind === 'all' || li.dataset.kind === kind;
+        li.hidden = !match;
+        if (match) shown++;
+      });
+
+      // Um ano sem itens visíveis não deve deixar o cabeçalho órfão.
+      list.querySelectorAll('.pub-year').forEach(function (sec) {
+        var any = sec.querySelector('.biblist > li:not([hidden])');
+        sec.hidden = !any;
+      });
+
+      if (empty) empty.hidden = shown !== 0;
+
+      chips.forEach(function (c) {
+        var on = c.dataset.filter === kind;
+        c.classList.toggle('is-active', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var k = c.dataset.filter;
+        apply(k);
+        // Mantém o filtro no endereço, para o link poder ser compartilhado.
+        history.replaceState(null, '', k === 'all' ? location.pathname : '#' + k);
+      });
+    });
+
+    // Aceita /research/publications/#phd vindo de fora.
+    apply((location.hash || '').replace('#', '') || 'all');
+  })();
+</script>

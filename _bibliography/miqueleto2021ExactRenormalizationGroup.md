@@ -2,8 +2,8 @@
 group: true
 type: article
 author:
-    - name: João Lucas Miqueleto
-    - name: André G. S. Landulfo
+    - slug: miqueleto
+    - slug: landulfo
 title: Exact Renormalization Group, Entanglement Entropy, and Black Hole Entropy
 journal: Physical Review D
 volume: '103'

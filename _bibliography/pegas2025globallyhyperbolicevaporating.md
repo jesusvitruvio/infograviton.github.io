@@ -3,7 +3,7 @@ group: true
 type: article
 author:
     - name: Juan V. O. Pêgas
-    - name: André G. S. Landulfo
+    - slug: landulfo
     - name: George E. A. Matsas
     - name: Daniel A. T. Vanzella
 title: Globally hyperbolic evaporating black hole and the information loss issue

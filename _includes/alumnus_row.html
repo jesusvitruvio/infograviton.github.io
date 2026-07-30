@@ -1,0 +1,26 @@
+{%- comment -%}
+Linha de egresso: nome e as passagens pelo grupo, com os anos. Compacto de
+propósito — quem saiu continua registrado, sem ocupar o espaço de quem está.
+{%- endcomment -%}
+{%- assign m = include.member -%}
+{%- assign t = site.data.strings -%}
+
+<li class="alumnus">
+  <span class="alumnus-name">
+    {%- if m.website -%}
+    <a href="{{ m.website }}" target="_blank" rel="noopener">{{ m.name }}</a>
+    {%- elsif m.lattes -%}
+    <a href="https://lattes.cnpq.br/{{ m.lattes }}" target="_blank" rel="noopener">{{ m.name }}</a>
+    {%- else -%}
+    {{ m.name }}
+    {%- endif -%}
+  </span>
+  <span class="alumnus-roles">
+    {%- for r in m.roles -%}
+    {%- unless forloop.first %} · {% endunless -%}
+    {{ t.degrees[r.kind] }}
+    {{ r.start | slice: 0, 4 }}–{{ r.end | slice: 0, 4 }}
+    {%- if r.note %} ({{ r.note }}){% endif -%}
+    {%- endfor -%}
+  </span>
+</li>

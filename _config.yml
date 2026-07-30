@@ -1,12 +1,12 @@
 # O tema jekyll-theme-midnight foi removido: o site agora traz o próprio CSS
 # em _sass/, com tema claro e alternador de modo escuro.
 
-title: GIQ — Gravitação e Informação Quântica
+title: QGI — Quantum Gravitation and Information
 description: >-
   Research group on quantum gravitation and information at the Federal
   University of ABC. Members, research, seminars, and publications.
 lang: en
-short_name: GIQ
+short_name: QGI
 
 github:
   is_project_page: false
@@ -27,12 +27,8 @@ collections:
     output: false
   bibliography:
     output: false
-  # Teses, dissertações e monografias concluídas no grupo. Sem página
-  # individual: a listagem em /research/theses e afins mostra todos os dados.
-  theses:
-    output: false
   # Disciplinas, minicursos e notas de aula. Sem página individual: a listagem
-  # em /teaching e /pt/ensino mostra tudo e aponta para os materiais.
+  # em /teaching mostra tudo e aponta para os materiais.
   teaching:
     output: false
 
@@ -41,18 +37,11 @@ defaults:
       path: ""
     values:
       layout: "default"
-      lang: "en"
-  - scope:
-      path: "pt"
-    values:
-      layout: "default"
-      lang: "pt"
   - scope:
       path: ""
       type: "seminars"
     values:
       layout: "seminar"
-      lang: "en"
 
 sass:
   style: compressed

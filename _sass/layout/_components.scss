@@ -86,18 +86,6 @@
 
 /* ---------- Membros ---------- */
 
-.member-group { margin-bottom: 2.5rem; }
-
-.member-group > h2 {
-    font-size: .82rem;
-    letter-spacing: .11em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: .45rem;
-    margin-bottom: 1.25rem;
-}
-
 .member-list {
     list-style: none;
     margin: 0;
@@ -164,6 +152,43 @@
 }
 
 .member-links { margin: 0; }
+
+/* ---------- Egressos ---------- */
+
+/* Lista compacta: quem saiu continua registrado sem ocupar o espaço visual de
+   quem está no grupo hoje. */
+.alumni-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: var(--measure);
+}
+
+.alumnus {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .25rem .75rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.alumnus:last-child { border-bottom: 0; }
+
+.alumnus-name {
+    font-size: .95rem;
+    margin-right: auto;
+}
+
+.alumnus-roles {
+    font-size: .8rem;
+    color: var(--text-faint);
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 560px) {
+    .alumnus-roles { white-space: normal; }
+}
 
 /* ---------- Pesquisa ---------- */
 
@@ -233,6 +258,52 @@
 
 /* ---------- Publicações ---------- */
 
+/* Seletor de tipo. Fica oculto até o JS habilitá-lo: sem script, a lista
+   completa continua visível e legível. */
+.pub-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: 0 0 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    max-width: var(--measure);
+}
+
+.pub-filter[hidden] { display: none; }
+
+.pub-chip {
+    font: inherit;
+    font-size: .82rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: .3rem .75rem;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.pub-chip:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.pub-chip.is-active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.pub-count {
+    font-size: .92em;
+    opacity: .7;
+    margin-left: .15rem;
+}
+
+.pub-empty { margin: 0; font-size: .9rem; }
+
 .pub-year { margin-bottom: 2rem; }
 
 .pub-year > h2 {
@@ -262,36 +333,6 @@
     position: absolute;
     left: 0;
     color: var(--text-faint);
-}
-
-/* ---------- Teses, dissertações e monografias ---------- */
-
-.thesis-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-width: var(--measure);
-}
-
-.thesis {
-    padding: 0 0 1.35rem;
-    margin-bottom: 1.35rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.thesis:last-child { border-bottom: 0; margin-bottom: 0; }
-
-.thesis-title {
-    margin: 0 0 .3rem;
-    font-size: 1.03rem;
-    line-height: 1.35;
-}
-
-.thesis-meta {
-    margin: 0;
-    font-size: .85rem;
-    line-height: 1.55;
-    color: var(--text-muted);
 }
 
 /* ---------- Ensino ---------- */

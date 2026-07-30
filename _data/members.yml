@@ -1,130 +1,244 @@
-# Membros do grupo. Fonte única de dados: as páginas em inglês e português
-# são geradas a partir daqui.
+# Todas as pessoas que passaram pelo grupo — atuais e egressas.
 #
-# Campos:
-#   slug      identificador; a foto esperada é assets/img/members/<slug>.jpg
-#             (se ausente, o site mostra as iniciais automaticamente)
-#   role      pi | postdoc | phd | masters   (rótulos em _data/i18n.yml)
-#   blurb_en  uma ou duas frases sobre a pesquisa, em inglês
-#   blurb_pt  o mesmo em português
-#   funding   FAPESP | CAPES | CNPq | UFABC
+# ────────────────────────────────────────────────────────────────────────────
+# PRINCÍPIO: um nome nunca é apagado deste arquivo.
+#
+# Em vez de dizer "fulano é doutorando", cada pessoa tem uma lista de
+# passagens datadas. O site deduz o resto: quem ainda está no grupo, há quanto
+# tempo, quando defendeu. Quando um vínculo termina, você acrescenta `end:` — a
+# pessoa migra sozinha para a lista de egressos, sem perder o registro.
+# ────────────────────────────────────────────────────────────────────────────
+#
+# Campos da pessoa:
+#   slug         identificador; foto esperada em assets/img/members/<slug>.jpg
+#                (sem foto, o site mostra as iniciais — nada quebra)
+#   name         nome completo
+#   lattes,      identificadores opcionais; viram links
+#   orcid,
+#   website
+#   blurb        uma ou duas frases; opcional, usado só para quem está no grupo
+#
+# Campos de cada passagem, em `roles:`
+#   kind         pi | postdoc | phd | msc | undergrad   (rótulos em strings.yml)
+#   start        'AAAA' ou 'AAAA-MM' — sempre entre aspas, é texto
+#   end          idem; a AUSÊNCIA de `end` é o que marca vínculo em curso
+#   institution  só quando difere da UFABC
+#   funding      FAPESP | CAPES | CNPq | UFABC
+#   note         observação curta (coorientação, por exemplo)
+#
+# Fonte: currículo Lattes de André G. S. Landulfo, seção Orientações
+# (consultado em 29/07/2026), cruzado com os Lattes individuais quando havia.
+
+# ─────────────────────────── coordenação ───────────────────────────
 
 - slug: landulfo
   name: André G. S. Landulfo
-  role: pi
-  institution: UFABC
   lattes: '2705752886744456'
-  blurb_en: >-
+  roles:
+    - kind: pi
+      start: '2012'
+  blurb: >-
     General relativity, quantum field theory in curved spacetimes, and quantum
     information at its interface with relativity. PhD from IFT/UNESP under
     George Matsas, postdoc at IFSC-USP.
-  blurb_pt: >-
-    Relatividade geral, teoria quântica de campos em espaços-tempos curvos e
-    informação quântica na interface com a relatividade. Doutorado no IFT/UNESP
-    sob orientação de George Matsas, pós-doutorado no IFSC-USP.
+
+# ───────────────────────── no grupo hoje ──────────────────────────
 
 - slug: moreira
   name: Thiago Henrique Moreira
-  role: postdoc
-  institution: UFABC
   lattes: '4184415188926254'
   orcid: 0000-0001-7093-0287
-  funding: FAPESP
-  blurb_en: >-
+  roles:
+    - kind: postdoc
+      start: '2026'
+      funding: FAPESP
+  blurb: >-
     Decoherence and entropy production due to quantum fluctuations of spacetime.
     PhD from UFG with a research stay at the International Centre for Theory of
     Quantum Technologies, Gdansk.
-  blurb_pt: >-
-    Decoerência e produção de entropia devidas a flutuações quânticas do
-    espaço-tempo. Doutorado pela UFG, com período sanduíche no International
-    Centre for Theory of Quantum Technologies, em Gdansk.
 
 - slug: alves
   name: Níckolas de Aguiar Alves
-  role: phd
-  institution: UFABC
   lattes: '4933609438452718'
   orcid: 0000-0002-0309-735X
   website: https://aguiaralves.com
-  funding: FAPESP
-  blurb_en: >-
+  roles:
+    - kind: msc
+      start: '2021-02'
+      end: '2023-04'
+      funding: FAPESP
+    - kind: phd
+      start: '2023-09'
+      funding: CAPES
+  blurb: >-
     Infrared behaviour of gravity: asymptotic symmetries, the Bondi–Metzner–Sachs
     group, memory effects, and their role in quantum field theory on curved
     spacetimes.
-  blurb_pt: >-
-    Comportamento infravermelho da gravidade: simetrias assintóticas, grupo de
-    Bondi–Metzner–Sachs, efeitos de memória e seu papel na teoria quântica de
-    campos em espaços-tempos curvos.
 
 - slug: oliveira
   name: Eduardo Amâncio Barbosa Oliveira
-  role: phd
-  institution: IFT/UNESP
   lattes: '8459917280924828'
   orcid: 0000-0002-4099-8878
-  funding: FAPESP
-  blurb_en: >-
+  roles:
+    - kind: phd
+      start: '2022'
+      institution: IFT/UNESP
+      funding: FAPESP
+  blurb: >-
     Foundations of quantum mechanics and relativistic quantum information,
     looking for low-energy traces of quantum gravity through relativistic
     quantum clocks. Visiting researcher at IQOQI Vienna.
-  blurb_pt: >-
-    Fundamentos da mecânica quântica e informação quântica relativística, em
-    busca de traços de gravitação quântica a baixas energias por meio de
-    relógios quânticos relativísticos. Pesquisador visitante no IQOQI Viena.
 
 - slug: depaula
   name: João Paulo Almeida de Paula
-  role: phd
-  institution: UFABC
   lattes: '7247553962111836'
-  funding: CAPES
-  blurb_en: >-
-    Quantum field theory in curved spacetimes. Master's thesis on blackbody
-    radiation of the scalar field in the Einstein universe (UNIFEI).
-  blurb_pt: >-
-    Teoria quântica de campos em espaços-tempos curvos. Dissertação de mestrado
-    sobre radiação de corpo negro do campo escalar no universo de Einstein
-    (UNIFEI).
+  roles:
+    - kind: phd
+      start: '2024'
+      funding: CAPES
+  blurb: >-
+    Quantum communication in curved spacetimes: energy flux and the limits on
+    producing and transmitting information.
 
 - slug: dejesus
   name: Marcos Souza de Jesus
-  role: masters
-  institution: UFABC
   lattes: '5005630151743565'
-  funding: UFABC
-  blurb_en: >-
+  roles:
+    - kind: msc
+      start: '2025'
+      funding: CNPq
+  blurb: >-
     Asymptotic entropy bounds, quantum energy conditions, and their consequences
     for general relativity and quantum field theory in curved spacetimes.
-  blurb_pt: >-
-    Limites entrópicos assintóticos, condições quânticas de energia e suas
-    consequências para a relatividade geral e a teoria quântica de campos em
-    espaços-tempos curvos.
 
-- slug: silva
+- slug: silva-rafael
   name: Rafael César Silva
-  role: masters
-  institution: UFABC
   lattes: '6548698366360912'
-  funding: CAPES
-  blurb_en: >-
+  roles:
+    - kind: msc
+      start: '2026'
+      funding: CNPq
+  blurb: >-
     Bottom-up approaches to quantum gravity and low-energy quantum gravitational
     effects, with interests in entanglement, gravitation, and cosmology.
-  blurb_pt: >-
-    Abordagens bottom-up para gravitação quântica e efeitos de gravitação
-    quântica de baixas energias, com interesse em emaranhamento, gravitação e
-    cosmologia.
 
 - slug: mota
   name: Pedro Henrique de Morais Mota
-  role: masters
-  institution: UFABC
   lattes: '0734231175305779'
-  funding: CAPES
-  blurb_en: >-
+  roles:
+    - kind: msc
+      start: '2026'
+      funding: CNPq
+  blurb: >-
     Classical singularity theorems and their generalizations to regimes where
     quantum mechanics matters, with a focus on the quantum Bousso bound.
     Co-supervised by Daniel A. T. Vanzella.
-  blurb_pt: >-
-    Teoremas de singularidade clássicos e suas generalizações para contextos em
-    que a mecânica quântica é relevante, com enfoque na entropia de Bousso
-    quântica. Coorientação de Daniel A. T. Vanzella.
+
+- slug: maqueara
+  name: Felipe Perícole Maqueara
+  roles:
+    - kind: msc
+      start: '2026'
+  blurb: >-
+    Gravitationally induced decoherence.
+
+- slug: correr
+  name: Carlos Henrique Correr da Silva
+  roles:
+    - kind: undergrad
+      start: '2025'
+      institution: IFUSP
+      funding: FAPESP
+  blurb: >-
+    Radiation, acceleration, and the Unruh effect.
+
+# ───────────────────────────── egressos ────────────────────────────
+# Ordem: pela conclusão mais recente. Nada aqui precisa de blurb.
+
+- slug: miqueleto
+  name: João Lucas Miqueleto Reis
+  roles:
+    - kind: msc
+      start: '2015'
+      end: '2017'
+    - kind: phd
+      start: '2018'
+      end: '2023'
+      funding: CAPES
+
+- slug: barcellos
+  name: Ian Bernardes Barcellos
+  roles:
+    - kind: msc
+      start: '2016'
+      end: '2018'
+      funding: FAPESP
+    - kind: phd
+      start: '2019'
+      end: '2023'
+      funding: FAPESP
+
+- slug: portales-oliva
+  name: Felipe Ignacio Portales Oliva
+  roles:
+    - kind: phd
+      start: '2015'
+      end: '2019'
+      funding: FAPESP
+
+- slug: honorio
+  name: Marcelo Honório
+  roles:
+    - kind: msc
+      start: '2015'
+      end: '2017'
+      funding: CNPq
+
+- slug: sanches
+  name: Lucas Timotheo Sanches
+  roles:
+    - kind: msc
+      start: '2015'
+      end: '2017'
+      funding: CAPES
+      note: co-supervised
+
+- slug: yordaky
+  name: Beatriz Liano de Araujo Yordaky
+  roles:
+    - kind: undergrad
+      start: '2016'
+      end: '2017'
+      funding: CNPq
+
+- slug: penedo
+  name: Emerson Penedo
+  roles:
+    - kind: undergrad
+      start: '2013'
+      end: '2014'
+      funding: CNPq
+
+- slug: santiago
+  name: Jéssica Santiago Silva
+  roles:
+    - kind: msc
+      start: '2011'
+      end: '2013'
+      funding: FAPESP
+
+- slug: marcori
+  name: Oton Marcori
+  roles:
+    - kind: msc
+      start: '2011'
+      end: '2013'
+      funding: FAPESP
+
+- slug: garcia
+  name: Mariano Cueva Moraes Garcia
+  roles:
+    - kind: undergrad
+      start: '2012'
+      end: '2013'
+      funding: CAPES

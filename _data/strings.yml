@@ -1,0 +1,93 @@
+# Textos de interface e rotas do site, num único lugar.
+# Uso nos templates:  {% assign t = site.data.strings %}  →  {{ t.nav.members }}
+#
+# O site já foi bilíngue (inglês e português). O suporte a português foi
+# removido; se um dia voltar, o caminho é reintroduzir um nível de idioma
+# no topo deste arquivo e um campo `lang` no front matter das páginas.
+
+locale: en-US
+site_title: Quantum Gravitation and Information
+site_short: QGI
+tagline: Federal University of ABC · Santo André, Brazil
+
+paths:
+  home: /
+  members: /members/
+  research: /research/
+  publications: /research/publications/
+  teaching: /teaching/
+  upcoming: /upcoming/
+  past: /past/
+  suggestions: /suggestions/
+  join: /join/
+
+nav:
+  home: Home
+  members: Members
+  research: Research
+  branches: Branches
+  publications: Publications
+  teaching: Teaching
+  seminars: InfoGraviton
+  upcoming: Upcoming
+  past: Past
+  suggestions: Suggestions
+  join: How to Join
+
+# Rótulo por vínculo. `roles` descreve a pessoa; `degrees` é a forma curta
+# usada nos egressos, ao lado dos anos.
+roles:
+  pi: Principal investigator
+  postdoc: Postdoctoral researcher
+  phd: PhD student
+  msc: Master's student
+  undergrad: Undergraduate researcher
+
+degrees:
+  pi: Coordination
+  postdoc: Postdoc
+  phd: PhD
+  msc: MSc
+  undergrad: Undergraduate research
+
+# Níveis de tese, usados por _includes/source.html no type: thesis
+thesis:
+  phd: Doctoral thesis
+  masters: Master's dissertation
+  undergrad: Undergraduate monograph
+
+# Estados de publicação, usados por _includes/pubstate.html
+pubstate:
+  inpreparation: In preparation
+  submitted: Submitted
+  forthcoming: Forthcoming
+  inpress: In press
+  unpublished: Unpublished
+  prepublished: Preprint
+
+ui:
+  upcoming_seminars: Upcoming seminars
+  recent_seminars: Recent seminars
+  all_seminars: See all seminars
+  no_seminars: No seminars scheduled at the moment.
+  supported_by: Supported by
+  theme_toggle: Toggle dark mode
+  lattes: Lattes
+  website: Website
+  presented_in: to be presented in
+  advised_by: Advised by
+  no_teaching: Nothing listed yet.
+  courses: Courses and minicourses
+  lecture_notes: Lecture notes and materials
+  # Seletor de tipo na página de publicações
+  filter_all: All
+  filter_articles: Articles
+  filter_theses: Theses
+  filter_dissertations: Dissertations
+  filter_monographs: Monographs
+  filter_empty: Nothing of this type yet.
+  # Página de membros
+  current_members: Current members
+  alumni: Alumni
+  since: since
+  no_members: Nobody listed yet.

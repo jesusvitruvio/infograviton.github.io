@@ -1,9 +1,8 @@
-# GIQ — Gravitação e Informação Quântica
+# QGI — Quantum Gravitation and Information
 
 Site do grupo de pesquisa em gravitação e informação quântica da Universidade
-Federal do ABC. Bilíngue (inglês na raiz, português em `/pt/`), com matemática
-em LaTeX, tema claro e escuro, e o arquivo completo do journal club
-**InfoGraviton**.
+Federal do ABC. Em inglês, com matemática em LaTeX, tema claro e escuro, e o
+arquivo completo do journal club **InfoGraviton**.
 
 Este documento é longo de propósito. Ele supõe que você programa, mas **não**
 supõe que você conheça Jekyll, Liquid, YAML ou SCSS — cada um é apresentado
@@ -19,7 +18,6 @@ leia a seção [Tarefas do dia a dia](#tarefas-do-dia-a-dia) e ignore o resto.
 - [Rodando localmente](#rodando-localmente)
 - [Mapa do repositório](#mapa-do-repositório)
 - [Os quatro conceitos do Jekyll que este site usa](#os-quatro-conceitos-do-jekyll-que-este-site-usa)
-- [Como o site é bilíngue](#como-o-site-é-bilíngue)
 - [Tarefas do dia a dia](#tarefas-do-dia-a-dia)
 - [Aparência: cores, fontes e tipografia](#aparência-cores-fontes-e-tipografia)
 - [Publicação](#publicação)
@@ -59,8 +57,7 @@ do Jekyll", não uma página do site.
 
 **Repetição é resolvida no build, não em tempo de execução.** A lista de
 membros existe uma única vez, em `_data/members.yml`; o Jekyll a percorre e
-escreve o HTML de cada pessoa nas duas versões de idioma. Você edita um lugar,
-oito cartões mudam.
+escreve o HTML de cada cartão. Você edita um lugar, a página inteira muda.
 
 ---
 
@@ -78,8 +75,9 @@ Guarda listas e pares chave-valor. É o que descreve **quem** são os membros,
 ```yaml
 - slug: alves            # um item de lista começa com "- "
   name: Níckolas de Aguiar Alves
-  role: phd              # indentação define o aninhamento
-  funding: FAPESP
+  roles:                 # indentação define o aninhamento
+    - kind: phd
+      start: '2023-09'
 ```
 
 Regra de ouro: **indentação é sintaxe**. Dois espaços a mais ou a menos mudam o
@@ -112,7 +110,7 @@ sintaxes, e distinguir as duas resolve 90% da leitura:
 Os comandos que aparecem neste repositório são poucos:
 
 ```liquid
-{% assign t = site.data.i18n[page.lang] %}   atribui uma variável
+{% assign t = site.data.strings %}          atribui uma variável
 {% for m in site.data.members %} ... {% endfor %}   itera sobre uma lista
 {% if page.hero %} ... {% endif %}           condicional
 {% include member_card.html member=m %}      insere um trecho reutilizável
@@ -202,9 +200,9 @@ inválido** — veja [Armadilhas conhecidas](#armadilhas-conhecidas).
 ├── Gemfile / Gemfile.lock   dependências Ruby
 │
 ├── _data/                   ← DADOS: edite aqui, não no HTML
-│   ├── members.yml            os 8 membros do grupo
-│   ├── research.yml           as 5 linhas de pesquisa (textos EN e PT)
-│   └── i18n.yml               rótulos de interface, rotas e títulos por idioma
+│   ├── members.yml            todas as pessoas, atuais e egressas
+│   ├── research.yml           as 5 linhas de pesquisa
+│   └── strings.yml            rótulos de interface, rotas e títulos
 │
 ├── _layouts/                ← MOLDES de página inteira
 │   ├── default.html           cabeçalho, navegação, rodapé, scripts
@@ -212,55 +210,50 @@ inválido** — veja [Armadilhas conhecidas](#armadilhas-conhecidas).
 │
 ├── _includes/               ← TRECHOS reutilizáveis (parciais)
 │   ├── member_card.html       um cartão de pessoa
-│   ├── members_section.html   um grupo de pessoas por papel
+│   ├── member_status.html     deduz situação a partir das datas
+│   ├── alumnus_row.html       linha compacta de egresso
 │   ├── publication_list.html  publicações agrupadas por ano
-│   ├── thesis_list.html       teses de um nível (phd/masters/undergrad)
 │   ├── teaching_list.html     disciplinas ou notas de aula (course/notes)
 │   ├── include_seminar.html   um item na lista de seminários
 │   ├── bibitem.html           uma referência bibliográfica formatada
 │   ├── source.html            formatação por tipo (artigo, livro, tese...)
 │   ├── authorlist.html        "A, B, and C"
-│   ├── authorname.html        nome com link (ORCID, Lattes, site)
+│   ├── authorname.html        nome com link; resolve `slug` em members.yml
 │   ├── journaldata.html       revista, volume, número, páginas
 │   ├── eprintdata.html        arXiv, INSPIRE, estado da publicação
-│   ├── pubstate.html          "Em preparação" / "In preparation" etc.
+│   ├── pubstate.html          "In preparation", "Forthcoming" etc.
 │   ├── hyperlink.html         resolve DOI / handle / URL
-│   └── typeset_date_lang.html data formatada conforme o idioma da página
+│   └── typeset_date_lang.html data do seminário, com hora se for futuro
 │
 ├── _sass/                   ← ESTILOS (compilados para CSS)
-│   ├── base/_variables.scss   cores, fontes, medidas, recuo por idioma
-│   ├── base/_fonts.scss       @font-face da Montserrat (local, sem CDN)
+│   ├── base/_variables.scss   cores, fonte, medidas, recuo de parágrafo
+│   ├── base/_fonts.scss       @font-face da Montserrat (legado, não usada)
 │   ├── base/_typography.scss  corpo do texto, títulos, justificação
 │   ├── base/_media.scss       imagens, tabelas, equações
-│   ├── layout/_navigation.scss  cabeçalho, menu, seletor de idioma e tema
-│   └── layout/_components.scss  apresentação, membros, teses, publicações
+│   ├── layout/_navigation.scss  cabeçalho, menu e alternador de tema
+│   └── layout/_components.scss  apresentação, membros, publicações, ensino
 │
 ├── _seminars/               ← COLEÇÃO: um arquivo por seminário (tem página)
 ├── _bibliography/           ← COLEÇÃO: referências (sem página própria)
 ├── _suggestions/            ← COLEÇÃO: leituras sugeridas (sem página própria)
-├── _theses/                 ← COLEÇÃO: teses/dissertações (sem página própria)
 ├── _teaching/               ← COLEÇÃO: disciplinas e notas de aula (idem)
 │
 ├── assets/
 │   ├── css/main.scss          ponto de entrada dos estilos
-│   ├── fonts/                 arquivos .otf da Montserrat
+│   ├── fonts/                 .otf da Montserrat (legado)
 │   └── img/
 │       ├── banner-home.jpg    foto ao lado da apresentação na home
 │       └── members/           fotos, nomeadas pelo slug do membro
 │
-│                             INGLÊS (raiz)          PORTUGUÊS (/pt/)
-├── index.html               home                 │  pt/index.html
-├── members/                 Members              │  pt/membros/
-├── research/                Research → Branches  │  pt/pesquisa/
-│   ├── publications/          ↳ Publications     │    pt/pesquisa/publicacoes/
-│   ├── theses/                ↳ Theses           │    pt/pesquisa/teses/
-│   ├── dissertations/         ↳ Dissertations    │    pt/pesquisa/dissertacoes/
-│   └── monographs/            ↳ Monographs       │    pt/pesquisa/monografias/
-├── teaching/                Teaching             │  pt/ensino/
-├── upcoming/                InfoGraviton ↳ Upcoming │ pt/proximos/
-├── past/                    InfoGraviton ↳ Past  │  pt/anteriores/
-├── suggestions/             InfoGraviton ↳ Sugg. │  pt/sugestoes/
-├── join/                    How to Join          │  pt/participe/
+├── index.html               home
+├── members/                 Members
+├── research/                Research ▾  → Branches
+│   └── publications/          ↳ Publications (artigos e teses)
+├── teaching/                Teaching
+├── upcoming/                InfoGraviton ▾ → Upcoming
+├── past/                      ↳ Past
+├── suggestions/               ↳ Suggestions
+├── join/                    How to Join
 │
 ├── .github/workflows/pages.yml   build e publicação
 ├── .vscode/settings.json    desliga o formatador que corrompe front matter
@@ -272,8 +265,8 @@ servido em `/members/`.
 
 O menu tem seis itens no topo: Home, Members, **Research▾**, Teaching,
 **InfoGraviton▾** e How to Join. Os dois com seta são submenus — o primeiro
-reúne as linhas de pesquisa e os tipos de produção escrita do grupo; o segundo, a
-agenda e o arquivo do journal club. O rótulo do submenu não é uma página, apenas
+reúne as linhas de pesquisa e a produção escrita do grupo (artigos e teses,
+juntos em Publicações); o segundo, a agenda e o arquivo do journal club. O rótulo do submenu não é uma página, apenas
 abre a lista. A exceção é *Branches*, que corresponde a `/research/`, então esse
 endereço existe e funciona.
 
@@ -290,9 +283,8 @@ como `page.<chave>`.
 ```html
 ---
 layout: default          ← qual molde envolve esta página
-lang: en                 ← idioma (usado pelo sistema bilíngue)
 title: Members           ← vira o <h1> e o <title>
-alt: /pt/membros/        ← a mesma página no outro idioma
+description: ...         ← meta description, usada por buscadores
 ---
 <p>O conteúdo da página começa aqui.</p>
 ```
@@ -349,51 +341,11 @@ Em Liquid, acessa-se com `site.seminars`, `site.bibliography`. Use coleções
 quando cada item for volumoso ou precisar de página própria.
 
 **Arquivos de dados** (`_data/*.yml`) — uma **lista dentro de um só arquivo**,
-sem páginas. Acessa-se com `site.data.members`, `site.data.i18n`. Use quando os
+sem páginas. Acessa-se com `site.data.members`, `site.data.strings`. Use quando os
 itens forem curtos e você quiser editar todos de uma vez.
 
 Neste site: seminários são coleção (têm página, resumo longo); membros são
 dados (oito entradas curtas, mais prático num arquivo).
-
----
-
-## Como o site é bilíngue
-
-Não há plugin de tradução — o GitHub Pages só aceita uma lista fechada de
-plugins, então a solução é deliberadamente manual e explícita. São três peças.
-
-**1. Cada página declara idioma e contraparte.**
-
-```yaml
-lang: pt            # en | pt
-alt: /research/     # a MESMA página no outro idioma
-```
-
-O `alt` alimenta o link de troca de idioma no cabeçalho. É a única coisa que
-você precisa manter em dia ao criar páginas novas.
-
-**2. Todo texto de interface vem de `_data/i18n.yml`.**
-
-O arquivo tem duas árvores simétricas, `en:` e `pt:`, com rótulos, rotas e
-títulos. O layout escolhe a certa no início:
-
-```liquid
-{% assign t = site.data.i18n[page.lang] %}
-```
-
-Daí em diante, `{{ t.nav.members }}` imprime "Members" ou "Membros" conforme a
-página. As duas árvores **precisam ter exatamente as mesmas chaves** — uma
-chave só em `en:` produz espaço em branco na versão portuguesa.
-
-**3. Conteúdo compartilhado carrega os dois idiomas.**
-
-Membros e linhas de pesquisa têm campos paralelos (`blurb_en`/`blurb_pt`,
-`title_en`/`title_pt`) num único registro. Assim não há duas listas de pessoas
-para manter sincronizadas.
-
-**O que não é traduzido:** os seminários. Eles ficam no idioma em que foram
-apresentados; apenas a moldura da página muda. Traduzir 64 resumos técnicos
-seria manutenção sem retorno.
 
 ---
 
@@ -488,89 +440,169 @@ Publicações. O agrupamento é por ano, decrescente; entradas com
 > Jekyll atribui `site.time` a documentos de coleção sem data, então o teste
 > nunca dá verdadeiro. O critério confiável é o `pubstate`.
 
-### Adicionar ou editar um membro
+### O seletor de tipo em Publicações
 
-Edite `_data/members.yml` — as páginas EN e PT saem daí:
+No topo da página há filtros — *All*, *Articles*, *Theses*, *Dissertations*,
+*Monographs* — que escondem e mostram itens sem recarregar a página. O tipo de
+cada item sai de `thesis_level` quando existe e de `type` caso contrário, e vira
+o atributo `data-kind` do `<li>`.
+
+Três detalhes do funcionamento:
+
+Filtros sem nenhum item **não são renderizados**. Como ainda não há monografias,
+o botão *Monographs* não aparece — em vez de existir e não fazer nada. Cada
+botão mostra a contagem ao lado do rótulo, e um ano que fica sem itens visíveis
+esconde o próprio cabeçalho, para não deixar título órfão.
+
+O filtro fica no endereço, como `/research/publications/#phd`, então dá para
+mandar a alguém um link já filtrado. A página lê o hash ao carregar.
+
+O seletor **só aparece se houver JavaScript**: ele nasce com o atributo
+`hidden`, removido pelo script. Sem JS, o visitante vê a lista completa, que
+continua perfeitamente legível — nenhum conteúdo depende do script para existir.
+
+Para acrescentar um tipo, ponha o botão em `_includes/publication_list.html` com
+`data-filter` igual ao valor que aparecerá em `data-kind`, e o rótulo em
+`_data/strings.yml` sob `ui:`.
+
+### Membros: um nome nunca é apagado
+
+Este é o ponto mais importante do `_data/members.yml`, e vale entender antes de
+editar qualquer coisa.
+
+Em vez de gravar um estado — *"fulano é doutorando"* —, cada pessoa carrega uma
+**lista de passagens datadas** pelo grupo. O site deduz o resto: quem está aqui
+hoje, há quanto tempo, quando defendeu, e em que ordem as coisas aconteceram.
 
 ```yaml
-- slug: sobrenome           # identificador e nome do arquivo de foto
-  name: Nome Completo
-  role: masters             # pi | postdoc | phd | masters
-  institution: UFABC
-  lattes: '0000000000000000'
-  orcid: 0000-0000-0000-0000
-  website: https://exemplo.com
-  funding: FAPESP
-  blurb_en: One or two sentences about the research.
-  blurb_pt: Uma ou duas frases sobre a pesquisa.
+- slug: alves
+  name: Níckolas de Aguiar Alves
+  lattes: '4933609438452718'
+  orcid: 0000-0002-0309-735X
+  website: https://aguiaralves.com
+  roles:
+    - kind: msc
+      start: '2021-02'
+      end: '2023-04'
+      funding: FAPESP
+    - kind: phd            # sem `end`: vínculo em curso
+      start: '2023-09'
+      funding: CAPES
+  blurb: Uma ou duas frases sobre a pesquisa.
 ```
 
-A ordem das seções na página segue a hierarquia `pi → postdoc → phd → masters`,
-definida na página, não no arquivo de dados; dentro de cada seção, a ordem é a
-do arquivo.
+**A ausência de `end` é o que define quem está no grupo.** Quando alguém
+defende, você acrescenta a data de término — e a pessoa migra sozinha da seção
+*Current members* para *Alumni*, sem que ninguém precise apagar nada nem mover
+blocos de arquivo. O registro histórico fica intacto, e quem fez mestrado e
+doutorado aqui aparece com as duas passagens.
+
+Consequências práticas de guardar datas em vez de rótulos:
+
+O "since" do cartão é o ano da **primeira** passagem, não da atual. Níckolas
+entrou em 2021 para o mestrado e hoje é doutorando: o site diz "PhD student ·
+since 2021", que é a informação certa sobre há quanto tempo ele está no grupo.
+
+Nada precisa ser recalculado à mão quando o tempo passa. A lógica está em
+`_includes/member_status.html`, que não imprime nada — só define variáveis que
+o cartão e a linha de egresso consomem.
+
+**Campos.** `kind` aceita `pi`, `postdoc`, `phd`, `msc` e `undergrad`, com
+rótulos em `_data/strings.yml` (`roles:` para a forma longa, `degrees:` para a
+curta usada nos egressos). `start` e `end` são **texto entre aspas**, no
+formato `'AAAA'` ou `'AAAA-MM'` — sem aspas o YAML converteria em data e o
+`slice` do ano deixaria de funcionar. `institution` só aparece quando difere da
+UFABC; `funding` e `note` são opcionais.
+
+**Ordem na página.** A separação entre atuais e egressos é automática; a ordem
+*dentro* de cada bloco é a ordem do arquivo. É deliberado: ordenar por data em
+Liquid exigiria contorções, e a ordem manual permite decidir quem aparece
+primeiro.
 
 Fotos vão em `assets/img/members/<slug>.jpg`, quadradas, ao menos 400×400.
 Quem não tiver foto aparece com as iniciais — nada quebra.
 
-Para criar um papel novo (por exemplo `undergrad`), acrescente o rótulo em
-`_data/i18n.yml` sob `roles:` **nos dois idiomas** e chame
-`{% include members_section.html role='undergrad' lang=lang %}` nas duas
-páginas de membros.
+Para criar um nível novo, acrescente o rótulo em `_data/strings.yml` sob
+`roles:` **e** sob `degrees:`. Nenhuma outra mudança é necessária: a página não
+conhece a lista de níveis.
+
+### Autores por slug
+
+Quem está em `_data/members.yml` não precisa ser redigitado nas referências.
+Em vez de repetir nome e identificadores, passe o slug:
+
+```yaml
+author:
+    - slug: alves               # nome, ORCID e site vêm de members.yml
+    - slug: landulfo
+    - name: George E. A. Matsas  # quem é de fora continua escrito à mão
+```
+
+As duas formas convivem na mesma lista, e vale para `author`, `advisor`,
+`instructor` e `speaker`. Campos escritos ao lado do `slug` têm precedência,
+o que permite exceções pontuais.
+
+O ganho é manutenção: corrigir o ORCID de alguém em `members.yml` corrige em
+todas as citações do site de uma vez. Um slug inexistente aparece como
+"Unknown member: xxx" na página — erro visível, não silencioso.
 
 ### Editar as linhas de pesquisa
 
-`_data/research.yml`, com `title_en`/`title_pt` e `body_en`/`body_pt`. O `id`
-vira âncora, permitindo links diretos como `/research/#infrared`.
+`_data/research.yml`, com `title` e `body`. O `id` vira âncora, permitindo
+links diretos como `/research/#infrared`.
 
 ### Adicionar uma tese, dissertação ou monografia
 
-Crie um arquivo em `_theses/` — a convenção de nome é
-`ANO-sobrenome-nivel.md`. O arquivo contém **apenas** front matter:
+Teses **não têm coleção nem página próprias**: são entradas de `_bibliography/`
+com `type: thesis`, e aparecem na página de Publicações misturadas aos artigos,
+no grupo do ano correspondente. A ideia é que a página reúna toda a produção
+escrita do grupo numa linha do tempo única.
+
+Crie o arquivo com a mesma convenção de nome das outras referências,
+`primeiroautorANOPalavrasDoTitulo.md`:
 
 ```yaml
 ---
-author: Nome Completo do Autor
-degree: masters              # phd | masters | undergrad
-date: 2018-01-01             # usado para ordenar
-year: 2018                   # usado para exibir
+group: true                  # sem isto não aparece em Publicações
+type: thesis
+thesis_level: masters        # phd | masters | undergrad
 
-# Título em cada idioma. Escreva os dois: a página em inglês nunca mostra
-# texto em português, e vice-versa.
-title_en: Black Holes and the Generalized Second Law of Thermodynamics
-title_pt: Buracos negros e a segunda lei generalizada da termodinâmica
+author:
+    - name: Ian Bernardes Barcellos
+
+title: Black Holes and the Generalized Second Law of Thermodynamics
 
 advisor:
     - name: André G. S. Landulfo
       lattes: '2705752886744456'   # ou orcid, website, inspire
 
-program_en: Graduate Program in Physics
-program_pt: Programa de Pós-Graduação em Física
-institution_en: Federal University of ABC
-institution_pt: Universidade Federal do ABC
+institution: Federal University of ABC
 location: Santo André, SP
-pages: 115
+date: 2018-01-01             # define o ano e a posição na lista
 
 src: https://...              # link permanente; opcional
 ---
 ```
 
-O `degree` determina em qual das três páginas o trabalho aparece — Theses
-(doutorado), Dissertations (mestrado) ou Monographs (graduação) — e dentro de
-cada uma a ordem é do mais recente ao mais antigo.
+O `thesis_level` vira o rótulo exibido — "Master's dissertation", "Doctoral
+thesis" ou "Undergraduate monograph" —, definido em `_data/strings.yml`. O campo
+`thesistype`, em texto livre, continua funcionando para referências de terceiros
+que você só queira citar num seminário.
 
 O `src` deve ser o endereço permanente no Repositório Institucional da UFABC ou
 na BDTD. Com ele, o título vira link; sem ele, fica texto simples e nada quebra.
 **Não versione os PDFs**: uma tese passa facilmente de 10 MB, e todo mundo que
 clonar o repositório pagaria esse custo para sempre.
 
-Todos os campos de texto têm par `_en`/`_pt`. Se faltar um, o include cai no
-campo sem sufixo (`title`, `program`, `institution`) como último recurso — mas o
-certo é preencher os dois, porque o princípio dessas páginas é não misturar
-idiomas.
+> **Nota histórica:** houve uma coleção `_theses/` com três abas separadas
+> (Theses, Dissertations, Monographs), depois absorvidas por Publicações. A
+> vantagem foi reaproveitar a máquina de citações que já existia —
+> `bibitem.html` → `source.html` — em vez de manter um segundo mecanismo em
+> paralelo. O histórico do git preserva a versão anterior.
 
 ### Adicionar uma disciplina ou notas de aula
 
-A aba **Teaching / Ensino** tem duas seções, e o campo `kind` decide em qual o
+A aba **Teaching** tem duas seções, e o campo `kind` decide em qual o
 item aparece: `course` para disciplinas e minicursos, `notes` para notas de aula
 e outros materiais. Crie um arquivo em `_teaching/`, com o nome no padrão
 `ANO-identificador.md`:
@@ -579,8 +611,7 @@ e outros materiais. Crie um arquivo em `_teaching/`, com o nome no padrão
 ---
 kind: notes                  # course | notes
 
-title_en: Lectures on the Bondi–Metzner–Sachs group
-title_pt: Notas de aula sobre o grupo de Bondi–Metzner–Sachs
+title: Lectures on the Bondi–Metzner–Sachs group
 
 instructor:
     - name: Níckolas de Aguiar Alves
@@ -590,21 +621,15 @@ date: 2025-04-01             # usado para ordenar
 year: 2025                   # exibido, se não houver `term`
 term: 2025.1                 # opcional: quadrimestre/semestre, tem precedência
 
-level_en: Graduate           # opcional
-level_pt: Pós-graduação
+level: Graduate              # opcional
+venue: Minicourse at the I São Paulo School on Gravitational Physics
 
-venue_en: Minicourse at the I São Paulo School on Gravitational Physics
-venue_pt: Minicurso na I São Paulo School on Gravitational Physics
-
-description_en: >-
-  Um parágrafo em inglês sobre o conteúdo.
-description_pt: >-
-  O mesmo em português.
+description: >-
+  Um parágrafo sobre o conteúdo.
 
 # Lista de links. Use para PDF, vídeo, repositório, página da disciplina.
 materials:
-    - title_en: arXiv 2504.12521
-      title_pt: arXiv 2504.12521
+    - title: arXiv 2504.12521
       src: https://arxiv.org/abs/2504.12521
 
 # Alternativa a `materials`: um único link, aplicado ao próprio título.
@@ -612,36 +637,34 @@ materials:
 ---
 ```
 
-Todos os campos de texto seguem o padrão `_en`/`_pt` do resto do site. Se um
-faltar, o include cai no campo sem sufixo — mas preencha os dois.
-
 Para **hospedar notas de aula no próprio site**, coloque o PDF em
 `assets/teaching/` e aponte `src` para `/assets/teaching/arquivo.pdf`. Vale o
 mesmo alerta das teses: arquivos grandes ficam no histórico do git para sempre,
 então prefira o arXiv ou um repositório institucional quando o material for
 volumoso.
 
-Seções sem nenhum item exibem "Nada listado ainda" em vez de ficarem vazias —
+Seções sem nenhum item exibem "Nothing listed yet" em vez de ficarem vazias —
 a aba já funciona antes de haver conteúdo.
 
 ### Criar uma página nova
 
-Sempre em par, um idioma de cada vez:
-
-1. `nome/index.html` com `lang: en` e `alt: /pt/nome-pt/`.
-2. `pt/nome-pt/index.html` com `lang: pt` e `alt: /nome/`.
-3. Em `_data/i18n.yml`, acrescente a rota em `paths:` e o rótulo em `nav:`,
-   **nos dois idiomas**.
-4. Em `_layouts/default.html`, adicione o item ao menu — dentro de um
+1. Crie `nome/index.html` com front matter `layout: default`, `title:` e
+   `description:`.
+2. Em `_data/strings.yml`, acrescente a rota em `paths:` e o rótulo em `nav:`.
+3. Em `_layouts/default.html`, adicione o item ao menu — dentro de um
    `<ul class="dropdown-content">` se pertencer a Research ou InfoGraviton.
+
+Sempre referencie a rota por `{{ t.paths.nome | relative_url }}`, nunca com um
+caminho absoluto escrito à mão: é isso que permite ao site funcionar tanto na
+raiz quanto numa subpasta.
 
 ### Trocar a foto da home
 
 Substitua `assets/img/banner-home.jpg`. Ela aparece ao lado do texto de
 apresentação, numa coluna de 17rem, recortada em 3:2 pelo centro via
 `object-fit: cover` — então o assunto principal deve estar no meio da imagem.
-Se mudar as dimensões do arquivo, atualize os atributos `width` e `height` nos
-dois `index.html`: eles reservam o espaço e evitam o salto de layout durante o
+Se mudar as dimensões do arquivo, atualize os atributos `width` e `height` em
+`index.html`: eles reservam o espaço e evitam o salto de layout durante o
 carregamento. Abaixo de 820px de largura a grade colapsa e a foto vai para
 baixo do texto.
 
@@ -708,14 +731,16 @@ listas. Com variável, a especificidade fica plana e as exceções prevalecem.
 ## Publicação
 
 O site é servido pelo **GitHub Pages**, que reconstrói a cada push na branch
-principal. Não há workflow de GitHub Actions neste repositório: usa-se o build
-clássico do Pages.
+principal, através do workflow em `.github/workflows/pages.yml`.
 
-Isso tem uma consequência importante: **o Pages ignora o `Gemfile`** e usa o
-próprio conjunto de gems. O `Gemfile` existe apenas para o desenvolvimento
-local. Por isso também só é possível usar os
-[plugins da lista permitida](https://pages.github.com/versions/) — a razão pela
-qual o sistema bilíngue é manual.
+Esse workflow existe por um motivo: o build **clássico** do GitHub Pages usa
+Jekyll 3.10 e ignora o `Gemfile` do repositório, enquanto o desenvolvimento
+local usa Jekyll 4. Com o workflow, a produção instala exatamente as gems do
+`Gemfile`, então o que você vê em `jekyll serve` é o que vai ao ar — e a
+[lista fechada de plugins](https://pages.github.com/versions/) do Pages deixa de
+limitar o projeto.
+
+Pré-requisito, uma única vez: **Settings → Pages → Source → GitHub Actions**.
 
 ### Sobre a URL
 
@@ -886,7 +911,6 @@ leia a primeira mensagem, não a última.
 | **Bundler** | Gerenciador de gems; `bundle exec` usa as versões travadas |
 | **SCSS** | CSS estendido, compilado no build |
 | **custom property** | Variável CSS (`--bg`), viva no navegador |
-| **i18n** | *internationalization* — o mecanismo bilíngue |
 | **slug** | Identificador curto usado em URLs e nomes de arquivo |
 
 ---

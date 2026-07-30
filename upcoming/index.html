@@ -1,11 +1,9 @@
 ---
 layout: default
-lang: en
 title: Upcoming Seminars
-alt: /pt/proximos/
 description: Upcoming talks of the InfoGraviton journal club.
 ---
-{%- assign t = site.data.i18n[page.lang] -%}
+{%- assign t = site.data.strings -%}
 {%- assign future = site.seminars | sort: 'date' | where_exp: "s", "s.date > site.time" -%}
 
 <div class="prose">

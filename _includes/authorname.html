@@ -1,12 +1,48 @@
-{%- assign author = include.author -%}
-{%- if author.website -%}
-    <a href="{{ author.website }}" target="_blank" rel="noopener">{{ author.name }}</a>
-{%- elsif author.inspire -%}
-    <a href="https://inspirehep.net/authors/{{ author.inspire }}" target="_blank" rel="noopener">{{ author.name }}</a>
-{%- elsif author.orcid -%}
-    <a href="https://orcid.org/{{ author.orcid }}" target="_blank" rel="noopener">{{ author.name }}</a>
-{%- elsif author.lattes -%}
-    <a href="https://lattes.cnpq.br/{{ author.lattes }}" target="_blank" rel="noopener">{{ author.name }}</a>
+{%- comment -%}
+Nome de autor, com link quando há identificador.
+
+Duas formas de declarar um autor:
+
+  - name: Níckolas de Aguiar Alves      ← avulso; escreva os campos à mão
+    orcid: 0000-0002-0309-735X
+
+  - slug: alves                         ← alguém de _data/members.yml:
+                                          nome e identificadores vêm de lá
+
+A segunda evita redigitar os dados de quem já está no site, e faz com que
+corrigir o ORCID de uma pessoa num lugar corrija em todas as citações. Campos
+escritos junto do `slug` têm precedência, o que permite exceções pontuais.
+{%- endcomment -%}
+{%- assign a = include.author -%}
+
+{%- if a.slug -%}
+  {%- assign known = site.data.members | where: 'slug', a.slug | first -%}
+  {%- if known -%}
+    {%- assign a_name    = a.name    | default: known.name -%}
+    {%- assign a_website = a.website | default: known.website -%}
+    {%- assign a_orcid   = a.orcid   | default: known.orcid -%}
+    {%- assign a_lattes  = a.lattes  | default: known.lattes -%}
+    {%- assign a_inspire = a.inspire | default: known.inspire -%}
+  {%- else -%}
+    {%- comment -%} Slug inexistente: erro visível, não silencioso. {%- endcomment -%}
+    {%- assign a_name = a.name | default: a.slug | prepend: 'Unknown member: ' -%}
+  {%- endif -%}
 {%- else -%}
-    {{ author.name }}
+  {%- assign a_name    = a.name -%}
+  {%- assign a_website = a.website -%}
+  {%- assign a_orcid   = a.orcid -%}
+  {%- assign a_lattes  = a.lattes -%}
+  {%- assign a_inspire = a.inspire -%}
+{%- endif -%}
+
+{%- if a_website -%}
+    <a href="{{ a_website }}" target="_blank" rel="noopener">{{ a_name }}</a>
+{%- elsif a_inspire -%}
+    <a href="https://inspirehep.net/authors/{{ a_inspire }}" target="_blank" rel="noopener">{{ a_name }}</a>
+{%- elsif a_orcid -%}
+    <a href="https://orcid.org/{{ a_orcid }}" target="_blank" rel="noopener">{{ a_name }}</a>
+{%- elsif a_lattes -%}
+    <a href="https://lattes.cnpq.br/{{ a_lattes }}" target="_blank" rel="noopener">{{ a_name }}</a>
+{%- else -%}
+    {{ a_name }}
 {%- endif -%}

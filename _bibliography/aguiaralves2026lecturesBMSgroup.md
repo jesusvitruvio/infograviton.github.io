@@ -3,7 +3,7 @@ group: true
 type: article
 title: Lectures on the Bondi–Metzner–Sachs group and related topics in infrared physics
 author:
-    - name: Níckolas de Aguiar Alves
+    - slug: alves
 journal: The European Physical Journal C. Particles and Fields
 date: 2026-01-01
 arxiv: '2504.12521'

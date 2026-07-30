@@ -1,7 +1,6 @@
 {%- comment -%}
-Estado da publicação, no idioma da página. Os rótulos vêm de
-_data/i18n.yml → <lang>.pubstate, e não fixos aqui, para que a versão em
-português não exiba "Forthcoming".
+Estado da publicação. Os rótulos vêm de _data/strings.yml → pubstate, e não
+fixos aqui, para ficarem num só lugar.
 {%- endcomment -%}
-{%- assign t = site.data.i18n[page.lang] | default: site.data.i18n.en -%}
+{%- assign t = site.data.strings -%}
 {{- t.pubstate[include.pubstate] -}}

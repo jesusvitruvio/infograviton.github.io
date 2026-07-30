@@ -3,8 +3,8 @@ group: true
 type: article
 title: Null infinity as a Killing horizon
 author:
-    - name: Níckolas de Aguiar Alves
-    - name: André G. S. Landulfo
+    - slug: alves
+    - slug: landulfo
 journal: Physical Review D
 volume: '112'
 number: '6'

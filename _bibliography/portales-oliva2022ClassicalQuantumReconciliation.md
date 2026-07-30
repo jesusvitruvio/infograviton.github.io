@@ -2,8 +2,8 @@
 group: true
 type: article
 author:
-    - name: Felipe Portales-Oliva
-    - name: André G. S. Landulfo
+    - slug: portales-oliva
+    - slug: landulfo
 title: "Classical and quantum reconciliation of electromagnetic radiation: Vector Unruh modes and zero-Rindler-energy photons"
 journal: Physical Review D
 volume: '106'

@@ -1,11 +1,10 @@
+{%- comment -%}
+Cartão de quem está no grupo. O papel exibido e o "since" saem das datas, não
+de um campo fixo — ver member_status.html.
+{%- endcomment -%}
 {%- assign m = include.member -%}
-{%- assign lang = include.lang -%}
-{%- assign t = site.data.i18n[lang] -%}
-{%- if lang == 'pt' -%}
-  {%- assign blurb = m.blurb_pt -%}
-{%- else -%}
-  {%- assign blurb = m.blurb_en -%}
-{%- endif -%}
+{%- assign t = site.data.strings -%}
+{%- include member_status.html member=m -%}
 
 <li class="member">
   <div class="member-photo">
@@ -24,13 +23,18 @@
   <div class="member-body">
     <h3 class="member-name">{{ m.name }}</h3>
     <p class="member-affil">
-      {{ m.institution }}{%- if m.funding %} · {{ m.funding }}{% endif -%}
+      {{ t.roles[m_current.kind] }}
+      {%- if m_since %} · {{ t.ui.since }} {{ m_since }}{% endif -%}
+      {%- if m_current.institution %} · {{ m_current.institution }}{% endif -%}
+      {%- if m_current.funding %} · {{ m_current.funding }}{% endif -%}
     </p>
-    {%- if blurb %}<p class="member-blurb">{{ blurb }}</p>{% endif %}
+    {%- if m.blurb %}<p class="member-blurb">{{ m.blurb }}</p>{% endif %}
+    {%- if m.website or m.lattes or m.orcid %}
     <p class="member-links">
       {%- if m.website %}<a href="{{ m.website }}" target="_blank" rel="noopener">{{ t.ui.website }}</a>{% endif -%}
       {%- if m.lattes %}<a href="https://lattes.cnpq.br/{{ m.lattes }}" target="_blank" rel="noopener">{{ t.ui.lattes }}</a>{% endif -%}
       {%- if m.orcid %}<a href="https://orcid.org/{{ m.orcid }}" target="_blank" rel="noopener">ORCID</a>{% endif -%}
     </p>
+    {%- endif %}
   </div>
 </li>

@@ -97,26 +97,13 @@
 .dropdown:hover .dropdown-content,
 .dropdown.show .dropdown-content { display: block; }
 
-/* Ferramentas: idioma e tema */
+/* Alternador de tema */
 .nav-tools {
     display: flex;
     align-items: center;
     gap: .35rem;
     padding-left: .75rem;
     border-left: 1px solid var(--border);
-}
-
-.lang-switch {
-    font-size: .8rem;
-    color: var(--text-muted);
-    padding: .3rem .5rem;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-}
-
-.lang-switch:hover {
-    color: var(--accent);
-    border-color: var(--accent);
 }
 
 .theme-toggle {

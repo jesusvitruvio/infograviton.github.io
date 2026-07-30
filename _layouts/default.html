@@ -1,5 +1,4 @@
-{%- assign t = site.data.i18n[page.lang] -%}
-{%- assign other = site.data.i18n[t.other] -%}
+{%- assign t = site.data.strings -%}
 <!doctype html>
 <html lang="{{ t.locale }}">
   <head>
@@ -64,9 +63,6 @@
               <ul class="dropdown-content">
                 <li><a href="{{ t.paths.research | relative_url }}">{{ t.nav.branches }}</a></li>
                 <li><a href="{{ t.paths.publications | relative_url }}">{{ t.nav.publications }}</a></li>
-                <li><a href="{{ t.paths.theses | relative_url }}">{{ t.nav.theses }}</a></li>
-                <li><a href="{{ t.paths.dissertations | relative_url }}">{{ t.nav.dissertations }}</a></li>
-                <li><a href="{{ t.paths.monographs | relative_url }}">{{ t.nav.monographs }}</a></li>
               </ul>
             </li>
             <li><a href="{{ t.paths.teaching | relative_url }}">{{ t.nav.teaching }}</a></li>
@@ -82,21 +78,6 @@
           </ul>
 
           <div class="nav-tools">
-            {%- comment -%}
-              Destino da troca de idioma. Páginas institucionais declaram `alt`
-              no front matter. Seminários não têm contraparte traduzida — ficam
-              no idioma em que foram apresentados —, então o leitor vai para o
-              arquivo de seminários do outro idioma, não para a home.
-            {%- endcomment -%}
-            {%- if page.alt -%}
-              {%- assign switch_to = page.alt -%}
-            {%- elsif page.collection == 'seminars' -%}
-              {%- assign switch_to = other.paths.past -%}
-            {%- else -%}
-              {%- assign switch_to = other.paths.home -%}
-            {%- endif -%}
-            <a class="lang-switch" href="{{ switch_to | relative_url }}"
-               hreflang="{{ other.locale }}">{{ t.other_label }}</a>
             <button id="theme-toggle" class="theme-toggle"
                     aria-label="{{ t.ui.theme_toggle }}" title="{{ t.ui.theme_toggle }}">
               <span aria-hidden="true">◐</span>

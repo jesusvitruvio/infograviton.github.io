@@ -1,0 +1,26 @@
+{%- comment -%}
+Deduz a situação de uma pessoa a partir das datas em `roles`. Não imprime nada:
+define variáveis que o chamador usa em seguida (includes do Jekyll compartilham
+escopo com quem os invoca).
+
+Parâmetro: member
+
+Define:
+  m_active     true se alguma passagem não tem `end` — a pessoa está no grupo
+  m_current    a passagem em curso (a última sem `end`)
+  m_since      ano da primeira passagem, qualquer que seja o nível
+  m_last_end   ano da última passagem encerrada
+{%- endcomment -%}
+{%- assign m = include.member -%}
+{%- assign m_active = false -%}
+{%- assign m_current = nil -%}
+{%- for r in m.roles -%}
+  {%- unless r.end -%}
+    {%- assign m_active = true -%}
+    {%- assign m_current = r -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- assign m_starts = m.roles | map: 'start' | compact | sort -%}
+{%- assign m_since = m_starts | first | slice: 0, 4 -%}
+{%- assign m_ends = m.roles | map: 'end' | compact | sort -%}
+{%- assign m_last_end = m_ends | last | slice: 0, 4 -%}

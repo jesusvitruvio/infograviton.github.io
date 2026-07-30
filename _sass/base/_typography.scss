@@ -35,7 +35,7 @@ a:hover, a:focus {
    seminários isso ajuda a retomar a leitura. No menu e no rodapé seria ruído. */
 .prose a:visited,
 .biblist a:visited,
-.thesis-title a:visited,
+.teaching-title a:visited,
 .seminar-title a:visited {
     color: var(--accent-visited);
 }
@@ -80,9 +80,8 @@ p, ul, ol {
     hyphens: auto;
 }
 
-/* O recuo vem de --indent-para, definido por idioma em _variables.scss.
-   Usar variável em vez de seletor por lang mantém a especificidade baixa, de
-   modo que as exceções abaixo continuam prevalecendo. */
+/* O recuo vem de --indent-para, em _variables.scss. Usar variável mantém a
+   especificidade baixa, de modo que as exceções abaixo prevalecem. */
 .prose p,
 .research-line p {
     text-indent: var(--indent-para);

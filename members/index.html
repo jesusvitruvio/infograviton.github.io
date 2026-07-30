@@ -1,19 +1,39 @@
 ---
 layout: default
-lang: en
 title: Members
-alt: /pt/membros/
-description: Faculty, postdoctoral researchers, and graduate students of the group.
+description: Current members and alumni of the group, from 2011 to today.
 ---
-{%- assign lang = page.lang -%}
+{%- assign t = site.data.strings -%}
 
 <div class="prose">
-  <p>The group brings together researchers at every career stage, working on
-  general relativity, quantum field theory in curved spacetimes, and quantum
-  information. Most members are based at UFABC in Santo André.</p>
+  <p>The group brings together researchers at every career stage. Nobody is
+  removed from this page when they move on — the list below simply separates
+  who is here now from who has passed through, and the years are computed from
+  the dates each person's record carries.</p>
 </div>
 
-{% include members_section.html role='pi' lang=lang %}
-{% include members_section.html role='postdoc' lang=lang %}
-{% include members_section.html role='phd' lang=lang %}
-{% include members_section.html role='masters' lang=lang %}
+<div class="section-head"><h2>{{ t.ui.current_members }}</h2></div>
+{%- assign n_current = 0 -%}
+<ul class="member-list">
+  {%- for m in site.data.members -%}
+    {%- include member_status.html member=m -%}
+    {%- if m_active -%}
+      {%- assign n_current = n_current | plus: 1 %}
+      {% include member_card.html member=m %}
+    {%- endif -%}
+  {%- endfor %}
+</ul>
+{%- if n_current == 0 %}<p class="muted">{{ t.ui.no_members }}</p>{% endif %}
+
+<div class="section-head"><h2>{{ t.ui.alumni }}</h2></div>
+{%- assign n_alumni = 0 -%}
+<ul class="alumni-list">
+  {%- for m in site.data.members -%}
+    {%- include member_status.html member=m -%}
+    {%- unless m_active -%}
+      {%- assign n_alumni = n_alumni | plus: 1 %}
+      {% include alumnus_row.html member=m %}
+    {%- endunless -%}
+  {%- endfor %}
+</ul>
+{%- if n_alumni == 0 %}<p class="muted">{{ t.ui.no_members }}</p>{% endif %}

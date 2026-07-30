@@ -2,7 +2,7 @@
 group: true
 type: article
 author:
-  - name: André G. S. Landulfo
+  - slug: landulfo
 title: "Nonperturbative Approach to Relativistic Quantum Communication Channels"
 journal: Physical Review D
 volume: '93'

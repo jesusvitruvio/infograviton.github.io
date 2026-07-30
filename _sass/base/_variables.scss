@@ -38,9 +38,9 @@
     --base-size: 16.5px;
     --line-height: 1.62;
 
-    /* Recuo de primeira linha do texto corrido. O padrão é zero: na prática
-       editorial em inglês, parágrafos na web são separados por espaço, não
-       por recuo. O português recebe recuo na regra abaixo. */
+    /* Recuo de primeira linha do texto corrido. Zero por convenção da
+       tipografia anglo-saxã na web, em que parágrafos são separados por
+       espaço vertical e não por recuo. */
     --indent-para: 0;
 
     /* Medidas */
@@ -48,12 +48,6 @@
     /* largura confortável de leitura */
     --wide: 72rem;
     /* largura da barra e das grades */
-}
-
-/* Português: recuo de 1,25 cm recomendado pela ABNT, ≈ 2.8em neste corpo.
-   O inglês fica sem recuo, conforme o padrão da tipografia anglo-saxã na web. */
-html[lang^="pt"] {
-    --indent-para: 0.0em;
 }
 
 :root[data-theme="dark"] {

@@ -1,5 +1,7 @@
 {%- assign s = include.source -%}
 
+{%- assign _tt = site.data.strings -%}
+
 {%- case s.type -%}
 
 {%- when "book" -%}
@@ -68,10 +70,19 @@
   {%- else -%}
     “{{ s.title }}”.
   {%- endif -%}
-  {%- if s.thesistype %}
+  {%- comment -%}
+    O nível vem de `thesis_level` (phd|masters|undergrad), com rótulo em
+    _data/strings.yml. `thesistype`, em texto livre, continua funcionando para
+    entradas de terceiros.
+  {%- endcomment -%}
+  {%- if s.thesis_level %}
+     {{ _tt.thesis[s.thesis_level] }}.
+  {%- elsif s.thesistype %}
      {{ s.thesistype }}.
   {%- endif %}
-   {{ s.location }}: {{ s.institution }}, {{ s.date | date: "%Y" }}. {% include eprintdata.html source=s %}
+   {{ s.location }}: {{ s.institution }}, {{ s.date | date: "%Y" }}.
+  {%- if s.advisor %} {{ _tt.ui.advised_by }} {% include authorlist.html authorlist=s.advisor %}.{% endif %}
+  {% include eprintdata.html source=s %}
 
 {%- when "unpublished" -%}
   {%- include hyperlink.html source=s -%}

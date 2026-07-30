@@ -1,8 +1,6 @@
 ---
 layout: default
-lang: en
 title: Past Seminars
-alt: /pt/anteriores/
 description: Complete archive of the InfoGraviton journal club.
 ---
 {%- assign past = site.seminars | sort: 'date' | reverse | where_exp: "s", "s.date < site.time" -%}
