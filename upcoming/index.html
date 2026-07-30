@@ -1,11 +1,25 @@
 ---
 layout: default
+lang: en
+title: Upcoming Seminars
+alt: /pt/proximos/
+description: Upcoming talks of the InfoGraviton journal club.
 ---
-<h1>Upcoming Seminars</h1>
+{%- assign t = site.data.i18n[page.lang] -%}
+{%- assign future = site.seminars | sort: 'date' | where_exp: "s", "s.date > site.time" -%}
 
-<ul>
-{% assign future = site.seminars | sort: 'date' | where_exp:"seminar","seminar.date > site.time" %}
-{% for seminar in future %}
-    {% include include_seminar.html seminar=seminar %}
-{% endfor %}
+<div class="prose">
+  <p>InfoGraviton is our journal club on information, quantum theory, and
+  gravity. Meetings are open — write to us if you would like to attend or to
+  present.</p>
+</div>
+
+{%- if future.size > 0 %}
+<ul class="seminar-list">
+  {%- for seminar in future %}
+  {% include include_seminar.html seminar=seminar abstract=true %}
+  {%- endfor %}
 </ul>
+{%- else %}
+<p class="muted">{{ t.ui.no_seminars }}</p>
+{%- endif %}

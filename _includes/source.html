@@ -5,7 +5,7 @@
 {%- when "book" -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    <em><a href="{{ link }}" target="_blank">{{ s.title }}</a></em>
+    <em><a href="{{ link }}" target="_blank" rel="noopener">{{ s.title }}</a></em>
   {%- else -%}
     <em>{{ s.title }}</em>
   {%- endif -%}
@@ -27,7 +27,7 @@
   {% if s.journal -%}
     {%- include hyperlink.html source=s -%}
     {%- if link -%}
-      <a href="{{ link }}" target="_blank">{% include journaldata.html source=s %}</a>.
+      <a href="{{ link }}" target="_blank" rel="noopener">{% include journaldata.html source=s %}</a>.
     {%- else -%}
       {% include journaldata.html source=s %}.
     {%- endif -%}
@@ -41,7 +41,7 @@
   In 
   {% include hyperlink.html source=s -%}
   {%- if link -%}
-    <em><a href="{{ link }}" target="_blank">{{ s.booktitle }}</a></em>
+    <em><a href="{{ link }}" target="_blank" rel="noopener">{{ s.booktitle }}</a></em>
   {%- else -%}
     <em>{{ s.booktitle }}</em>
   {%- endif -%}
@@ -64,7 +64,7 @@
 {%- when "thesis" -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    “<a href="{{ link }}" target="_blank">{{ s.title }}</a>”.
+    “<a href="{{ link }}" target="_blank" rel="noopener">{{ s.title }}</a>”.
   {%- else -%}
     “{{ s.title }}”.
   {%- endif -%}
@@ -76,7 +76,7 @@
 {%- when "unpublished" -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    “<a href="{{ link }}" target="_blank">{{ s.title }}</a>”.
+    “<a href="{{ link }}" target="_blank" rel="noopener">{{ s.title }}</a>”.
   {%- else -%}
     “{{ s.title }}”.
   {%- endif %}
@@ -85,7 +85,7 @@
 {%- when "tv" -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    <a href="{{ link }}" target="_blank"><em>{{ s.series }}</em>{%- if s.season and s.episode -%}, S{{ s.season | prepend: "0" | slice: -2, 2 }}E{{ s.episode | prepend: "0" | slice: -2, 2 }}{%- endif -%}{%- if s.title -%}: “{{ s.title }}”{%- endif -%}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
+    <a href="{{ link }}" target="_blank" rel="noopener"><em>{{ s.series }}</em>{%- if s.season and s.episode -%}, S{{ s.season | prepend: "0" | slice: -2, 2 }}E{{ s.episode | prepend: "0" | slice: -2, 2 }}{%- endif -%}{%- if s.title -%}: “{{ s.title }}”{%- endif -%}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
   {%- else -%}
     <em>{{ s.series }}</em>{%- if s.season and s.episode -%}, S{{ s.season | prepend: "0" | slice: -2, 2 }}E{{ s.episode | prepend: "0" | slice: -2, 2 }}{%- endif -%}{%- if s.title -%}: “{{ s.title }}”{%- endif -%}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}.
   {%- endif -%}
@@ -93,7 +93,7 @@
 {%- when "movie" -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    <a href="{{ link }}" target="_blank"><em>{{ s.title }}</em>{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
+    <a href="{{ link }}" target="_blank" rel="noopener"><em>{{ s.title }}</em>{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
   {%- else -%}
     <em>{{ s.title }}</em>{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}.
   {%- endif -%}
@@ -103,7 +103,7 @@
 {%- else -%}
   {%- include hyperlink.html source=s -%}
   {%- if link -%}
-    <a href="{{ link }}" target="_blank">{{ s.title }}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
+    <a href="{{ link }}" target="_blank" rel="noopener">{{ s.title }}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}</a>.
   {%- else -%}
     {{ s.title }}{%- if s.date %} ({{ s.date | date: "%Y" }}){%- endif -%}.
   {%- endif -%}

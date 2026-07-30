@@ -1,0 +1,19 @@
+---
+layout: default
+lang: en
+title: Teaching
+alt: /pt/ensino/
+description: Courses, minicourses, and lecture notes by members of the group.
+---
+{%- assign t = site.data.i18n[page.lang] -%}
+
+<div class="prose">
+  <p>Courses and minicourses taught by members of the group, together with
+  lecture notes and other material we make openly available.</p>
+</div>
+
+<div class="section-head"><h2>{{ t.ui.courses }}</h2></div>
+{% include teaching_list.html kind='course' lang=page.lang %}
+
+<div class="section-head"><h2>{{ t.ui.lecture_notes }}</h2></div>
+{% include teaching_list.html kind='notes' lang=page.lang %}

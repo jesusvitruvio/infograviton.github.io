@@ -1,7 +1,12 @@
-{%- assign seminar=include.seminar -%}
+{%- assign seminar = include.seminar -%}
 
-<li><a href="{{ seminar.url }}"><strong>{{ seminar.title | smartify }}</strong></a>
-<p>{% include typeset_date_lang.html date=seminar.date lang=seminar.language -%}</p>
-<p>{% include authorlist.html authorlist=seminar.speaker %}</p>
-{{ seminar.content | markdownify }}
+<li class="seminar-item">
+  <h3 class="seminar-title"><a href="{{ seminar.url | relative_url }}">{{ seminar.title | smartify }}</a></h3>
+  <p class="seminar-meta">
+    {% include typeset_date_lang.html date=seminar.date lang=seminar.language %}
+    {%- if seminar.speaker %}<br>{% include authorlist.html authorlist=seminar.speaker %}{% endif %}
+  </p>
+  {%- if include.abstract %}
+  <p class="seminar-abstract">{{ seminar.content | markdownify | strip_html | truncatewords: 45 }}</p>
+  {%- endif %}
 </li>

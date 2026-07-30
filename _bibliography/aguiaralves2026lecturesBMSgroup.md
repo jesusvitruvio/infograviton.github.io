@@ -1,4 +1,5 @@
 ---
+group: true
 type: article
 title: Lectures on the Bondi–Metzner–Sachs group and related topics in infrared physics
 author:

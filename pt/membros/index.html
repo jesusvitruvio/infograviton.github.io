@@ -1,0 +1,20 @@
+---
+layout: default
+lang: pt
+title: Membros
+alt: /members/
+description: Docente, pós-doutorado e estudantes de pós-graduação do grupo.
+---
+{%- assign lang = page.lang -%}
+
+<div class="prose">
+  <p>O grupo reúne pesquisadores em todas as etapas da carreira, trabalhando com
+  relatividade geral, teoria quântica de campos em espaços-tempos curvos e
+  informação quântica. A maior parte dos membros está sediada na UFABC, em
+  Santo André.</p>
+</div>
+
+{% include members_section.html role='pi' lang=lang %}
+{% include members_section.html role='postdoc' lang=lang %}
+{% include members_section.html role='phd' lang=lang %}
+{% include members_section.html role='masters' lang=lang %}

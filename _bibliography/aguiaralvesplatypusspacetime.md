@@ -1,4 +1,5 @@
 ---
+group: true
 type: article
 title: "Platypus stars: Exotic compact objects supported by vacuum pressure"
 author:

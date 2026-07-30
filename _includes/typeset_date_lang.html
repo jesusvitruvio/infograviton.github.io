@@ -1,5 +1,23 @@
+{%- comment -%}
+Formata a data de um seminário. Datas futuras mostram hora e fuso; datas
+passadas mostram apenas o dia. O idioma de exibição segue a página atual
+(page.lang), e não o idioma da apresentação.
+
+Parâmetros: date (obrigatório), lang (idioma em que a palestra será dada)
+{%- endcomment -%}
+{%- assign t = site.data.i18n[page.lang] | default: site.data.i18n.en -%}
+
 {%- if include.date > site.time -%}
-  {{ include.date | date: "%a, %d %b %Y, %H:%M" }} ({{ site.timezone }}){%- if include.lang -%}, to be presented in {{ seminar.language }}{%- endif -%}
+  {%- if page.lang == 'pt' -%}
+    {{ include.date | date: "%d/%m/%Y, %H:%M" }} ({{ site.timezone }})
+  {%- else -%}
+    {{ include.date | date: "%a, %d %b %Y, %H:%M" }} ({{ site.timezone }})
+  {%- endif -%}
+  {%- if include.lang %}, {{ t.ui.presented_in }} {{ include.lang }}{% endif -%}
 {%- else -%}
-  {{ include.date | date_to_string }}
+  {%- if page.lang == 'pt' -%}
+    {{ include.date | date: "%d/%m/%Y" }}
+  {%- else -%}
+    {{ include.date | date_to_string }}
+  {%- endif -%}
 {%- endif -%}

@@ -1,0 +1,73 @@
+---
+layout: default
+lang: pt
+alt: /
+hero: Gravitação e Informação Quântica
+hero_sub: >-
+  Grupo de pesquisa da Universidade Federal do ABC dedicado à interface entre
+  relatividade geral, teoria quântica de campos e informação quântica.
+description: >-
+  Grupo de pesquisa em gravitação e informação quântica na UFABC, Santo André.
+  Membros, linhas de pesquisa, seminários e publicações.
+---
+{%- assign t = site.data.i18n[page.lang] -%}
+
+<div class="about">
+  <div class="prose about-text">
+  <h2>Sobre o grupo</h2>
+
+  <p>Estudamos o que acontece quando gravitação e teoria quântica são levadas a
+  sério ao mesmo tempo. Nosso trabalho fica na interface entre relatividade
+  geral, teoria quântica de campos em espaços-tempos curvos e teoria da
+  informação quântica — um lugar em que perguntas sobre entropia, medição e a
+  estrutura do espaço-tempo se fundem.</p>
+
+  <p>Na prática, trabalhamos com informação quântica relativística e comunicação em
+  espaços-tempos curvos, com a estrutura infravermelha da gravidade e simetrias
+  assintóticas, com termodinâmica de buracos negros e limites
+  entrópicos e com abordagens bottom-up para gravitação quântica de
+  baixas energias.</p>
+
+  <p>O grupo tem sede na <a href="{{ site.institution_url }}">Universidade
+  Federal do ABC</a>, em Santo André, e é coordenado por
+  <a href="https://lattes.cnpq.br/2705752886744456">André G. S. Landulfo</a>.
+  Nossa pesquisa conta com apoio da FAPESP, da CAPES e do CNPq.</p>
+
+  <p>Realizamos o <strong>InfoGraviton</strong>, journal club semanal sobre
+  informação, teoria quântica e gravitação. O arquivo completo de apresentações
+  e as sugestões de leitura estão neste site, e visitantes são bem-vindos.</p>
+  </div>
+
+  <figure class="about-figure">
+    <img src="{{ '/assets/img/banner-home.jpg' | relative_url }}"
+         width="1024" height="400" loading="lazy"
+         alt="Painel de triângulos vermelhos e brancos em um saguão da Universidade Federal do ABC">
+    <figcaption>Universidade Federal do ABC, Santo André.</figcaption>
+  </figure>
+</div>
+
+{%- assign future = site.seminars | sort: 'date' | where_exp: "s", "s.date > site.time" -%}
+<div class="section-head">
+  <h2>{{ t.ui.upcoming_seminars }}</h2>
+  <a href="{{ t.paths.upcoming | relative_url }}">{{ t.ui.all_seminars }} →</a>
+</div>
+{%- if future.size > 0 %}
+<ul class="seminar-list">
+  {%- for seminar in future limit: 3 %}
+  {% include include_seminar.html seminar=seminar %}
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="muted">{{ t.ui.no_seminars }}</p>
+{%- endif %}
+
+{%- assign past = site.seminars | sort: 'date' | reverse | where_exp: "s", "s.date < site.time" -%}
+<div class="section-head">
+  <h2>{{ t.ui.recent_seminars }}</h2>
+  <a href="{{ t.paths.past | relative_url }}">{{ t.ui.all_seminars }} →</a>
+</div>
+<ul class="seminar-list">
+  {%- for seminar in past limit: 3 %}
+  {% include include_seminar.html seminar=seminar %}
+  {%- endfor %}
+</ul>

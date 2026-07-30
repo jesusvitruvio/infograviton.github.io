@@ -1,4 +1,5 @@
 ---
+group: true
 type: article
 title: Null infinity as a Killing horizon
 author:

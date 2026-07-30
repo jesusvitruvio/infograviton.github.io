@@ -1,17 +1,24 @@
 ---
 layout: default
+lang: en
+title: Suggestions
+alt: /pt/sugestoes/
+description: Papers suggested for discussion at the journal club.
 ---
-<h1>Suggestions</h1>
+{%- assign suggestions = site.suggestions | sort: 'date' | reverse -%}
 
-<p>Here is a list of papers that could be interesting to discuss in our meetings.</p>
+<div class="prose">
+  <p>Papers that could be interesting to discuss at our meetings. Suggestions
+  are welcome — open an issue on the repository or write to us.</p>
+</div>
 
-{% assign suggestions = site.suggestions | sort: 'date' | reverse %}
-<ul>
-{% for paper in suggestions %}
-    <li>{%- include bibitem.html entry=paper %}<br/><br/>
-    
-    {{ paper.content | markdownify }}
-
-    </li>
-{% endfor %}
+<ul class="biblist">
+  {%- for paper in suggestions %}
+  <li>
+    {%- include bibitem.html entry=paper -%}
+    {%- if paper.content != '' %}
+    <div class="seminar-abstract">{{ paper.content | markdownify }}</div>
+    {%- endif %}
+  </li>
+  {%- endfor %}
 </ul>

@@ -1,0 +1,38 @@
+{%- comment -%}
+Lista as publicações do grupo: entradas de _bibliography marcadas com `group: true`.
+Agrupa por ano, em ordem decrescente; trabalhos com `pubstate: inpreparation`
+aparecem ao final, numa seção própria.
+
+Nota: não se filtra por data nula, porque o Jekyll atribui site.time a
+documentos de coleção sem data — o critério confiável é o pubstate.
+
+Parâmetro: lang (en|pt)
+{%- endcomment -%}
+{%- assign t = site.data.i18n[include.lang] -%}
+
+{%- assign giq = site.bibliography | where_exp: 'p', 'p.group' -%}
+{%- assign wip = giq | where: 'pubstate', 'inpreparation' -%}
+{%- assign done = giq | where_exp: 'p', 'p.pubstate != "inpreparation"' | sort: 'date' | reverse -%}
+{%- assign by_year = done | group_by_exp: 'p', 'p.date | date: "%Y"' -%}
+
+{%- for group in by_year %}
+<section class="pub-year">
+  <h2>{{ group.name }}</h2>
+  <ul class="biblist">
+    {%- for paper in group.items %}
+    <li>{% include bibitem.html entry=paper %}</li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endfor %}
+
+{%- if wip.size > 0 %}
+<section class="pub-year">
+  <h2>{{ t.pubstate.inpreparation }}</h2>
+  <ul class="biblist">
+    {%- for paper in wip %}
+    <li>{% include bibitem.html entry=paper %}</li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif -%}

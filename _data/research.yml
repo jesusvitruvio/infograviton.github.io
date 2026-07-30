@@ -1,0 +1,83 @@
+# Linhas de pesquisa do grupo, exibidas em /research e /pt/pesquisa.
+
+- id: qftcs
+  title_en: Quantum field theory in curved spacetimes
+  title_pt: Teoria quântica de campos em espaços-tempos curvos
+  body_en: >-
+    How quantum fields behave when spacetime is not flat. This is the framework
+    behind the Unruh effect, Hawking radiation, and particle creation in
+    expanding universes, and it is the common language of most of what we do.
+    We are particularly interested in nonperturbative and algebraic approaches,
+    in the construction of physically reasonable states, and in what quantum
+    fields can tell us about the geometry they live on.
+  body_pt: >-
+    Como campos quânticos se comportam quando o espaço-tempo não é plano. É o
+    arcabouço por trás do efeito Unruh, da radiação Hawking e da criação de
+    partículas em universos em expansão, e é a linguagem comum da maior parte do
+    que fazemos. Interessam-nos em especial abordagens não perturbativas e
+    algébricas, a construção de estados fisicamente razoáveis e o que os campos
+    quânticos revelam sobre a geometria em que vivem.
+
+- id: rqi
+  title_en: Relativistic quantum information
+  title_pt: Informação quântica relativística
+  body_en: >-
+    What happens to information, entanglement, and measurement once relativity
+    is taken seriously. We study communication channels between observers in
+    curved spacetime, the operational meaning of measurements in quantum field
+    theory, and the use of particle detectors and relativistic quantum clocks as
+    probes of geometry.
+  body_pt: >-
+    O que acontece com informação, emaranhamento e medição quando a relatividade
+    é levada a sério. Estudamos canais de comunicação entre observadores em
+    espaços-tempos curvos, o significado operacional de medições em teoria
+    quântica de campos e o uso de detectores de partículas e relógios quânticos
+    relativísticos como sondas da geometria.
+
+- id: bhthermo
+  title_en: Black hole thermodynamics and entropy bounds
+  title_pt: Termodinâmica de buracos negros e limites entrópicos
+  body_en: >-
+    Black holes obey laws formally identical to those of thermodynamics, and the
+    reason why remains open. We work on generalized entropy, quantum energy
+    conditions, the Bousso bound and its quantum version, singularity theorems,
+    and the information loss problem in evaporating spacetimes.
+  body_pt: >-
+    Buracos negros obedecem a leis formalmente idênticas às da termodinâmica, e
+    a razão disso permanece em aberto. Trabalhamos com entropia generalizada,
+    condições quânticas de energia, o limite de Bousso e sua versão quântica,
+    teoremas de singularidade e o problema da perda de informação em
+    espaços-tempos evaporantes.
+
+- id: infrared
+  title_en: Infrared structure of gravity
+  title_pt: Estrutura infravermelha da gravidade
+  body_en: >-
+    The symmetries of spacetime at null infinity — the Bondi–Metzner–Sachs group
+    and its extensions — connect soft theorems, memory effects, and asymptotic
+    charges into a single structure. We investigate these asymptotic symmetries,
+    their generalization to cosmological horizons, and their consequences for
+    quantum field theory.
+  body_pt: >-
+    As simetrias do espaço-tempo no infinito nulo — o grupo de Bondi–Metzner–Sachs
+    e suas extensões — conectam teoremas soft, efeitos de memória e cargas
+    assintóticas numa única estrutura. Investigamos essas simetrias assintóticas,
+    sua generalização para horizontes cosmológicos e suas consequências para a
+    teoria quântica de campos.
+
+- id: qgravity
+  title_en: Low-energy quantum gravity
+  title_pt: Gravitação quântica de baixas energias
+  body_en: >-
+    Even without a complete theory of quantum gravity, the regime where gravity
+    and quantum mechanics first meet is accessible. We pursue bottom-up
+    approaches: gravitationally induced decoherence and entanglement, the
+    quantum nature of the gravitational field in table-top settings, and what
+    effective field theory can and cannot predict.
+  body_pt: >-
+    Mesmo sem uma teoria completa da gravitação quântica, o regime em que
+    gravidade e mecânica quântica se encontram pela primeira vez é acessível.
+    Perseguimos abordagens bottom-up: decoerência e emaranhamento induzidos
+    gravitacionalmente, a natureza quântica do campo gravitacional em
+    experimentos de bancada e o que a teoria efetiva de campos pode — e não
+    pode — prever.

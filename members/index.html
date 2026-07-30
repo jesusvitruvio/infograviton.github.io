@@ -1,0 +1,19 @@
+---
+layout: default
+lang: en
+title: Members
+alt: /pt/membros/
+description: Faculty, postdoctoral researchers, and graduate students of the group.
+---
+{%- assign lang = page.lang -%}
+
+<div class="prose">
+  <p>The group brings together researchers at every career stage, working on
+  general relativity, quantum field theory in curved spacetimes, and quantum
+  information. Most members are based at UFABC in Santo André.</p>
+</div>
+
+{% include members_section.html role='pi' lang=lang %}
+{% include members_section.html role='postdoc' lang=lang %}
+{% include members_section.html role='phd' lang=lang %}
+{% include members_section.html role='masters' lang=lang %}

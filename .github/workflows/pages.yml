@@ -1,0 +1,76 @@
+name: Build e publicação no GitHub Pages
+
+# Por que um workflow próprio em vez do build automático por branch:
+#
+# O build clássico do GitHub Pages usa Jekyll 3.10 com Ruby 3.3 e ignora o
+# Gemfile do repositório. Como o desenvolvimento local usa Jekyll 4, haveria
+# duas versões diferentes — e nenhuma garantia de que o site publicado é igual
+# ao que se vê em `jekyll serve`.
+#
+# Com este workflow, a produção usa exatamente o Gemfile do repositório. Além
+# disso, deixa de valer a lista fechada de plugins do GitHub Pages: qualquer
+# gem declarada no Gemfile passa a funcionar.
+#
+# Requer, uma única vez: Settings → Pages → Source → "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # permite disparar manualmente na aba Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita duas publicações simultâneas; não cancela a que já está em andamento.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true   # roda bundle install e cacheia as gems
+
+      - name: Configurar Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build do Jekyll
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
+
+      - name: Verificar links e HTML
+        continue-on-error: true      # informativo: não bloqueia a publicação
+        run: |
+          gem install html-proofer -N
+          htmlproofer ./_site \
+            --disable-external \
+            --allow-hash-href \
+            --ignore-empty-alt false
+
+      - name: Enviar artefato
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4

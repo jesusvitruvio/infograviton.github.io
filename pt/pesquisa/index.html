@@ -1,0 +1,20 @@
+---
+layout: default
+lang: pt
+title: Linhas de pesquisa
+alt: /research/
+description: Linhas de pesquisa do grupo em gravitação e informação quântica.
+---
+
+<div class="prose">
+  <p>Nosso trabalho se organiza em cinco linhas que se sobrepõem. Todas
+  compartilham uma mesma pergunta: o que a teoria quântica nos diz sobre o
+  espaço-tempo, e o que o espaço-tempo nos diz sobre a teoria quântica?</p>
+</div>
+
+{% for line in site.data.research %}
+<section class="research-line" id="{{ line.id }}">
+  <h2>{{ line.title_pt }}</h2>
+  <p>{{ line.body_pt }}</p>
+</section>
+{% endfor %}

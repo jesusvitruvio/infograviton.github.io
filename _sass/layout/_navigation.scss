@@ -1,155 +1,188 @@
-nav {
-    background-color: $bg-main;
-    box-shadow: 0px 3px 3px $bg-darker;
+.site-header {
     position: sticky;
     top: 0;
-    padding: 0;
     z-index: 99;
-    text-align: center;
+    background-color: var(--header-bg);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--border);
+}
+
+.bar {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.site-header .bar { min-height: 3.5rem; }
+
+/* Marca */
+.brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    margin-right: auto;
+    border: 0;
+    color: var(--text);
+}
+
+.brand:hover { color: var(--accent); }
+
+.brand-short {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: .04em;
+}
+
+.brand-full {
+    font-weight: 400;
+    font-size: .74rem;
+    color: var(--text-muted);
+}
+
+/* Navegação */
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .nav-list {
     list-style: none;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
-    display: inline-flex;
-}
-
-.nav-list > li {
-    position: relative;
     display: flex;
-    flex-direction: column;
-
-    &:hover > a {
-        background-color: $accent-secondary;
-        color: $bg-main;
-    }
-
-    &:hover > .parent-toggle {
-        background-color: $accent-secondary;
-        color: $bg-main;
-    }
-
-    &:hover .dropdown-content a {
-        color: $accent-primary;
-    }
-
-    &:hover .dropdown-content a:hover {
-        background-color: $accent-secondary;
-        color: $bg-main;
-    }
+    align-items: center;
+    gap: .15rem;
 }
 
-nav a, nav a:link, nav a:visited, .parent-toggle {
-    font-family: $font-regular;
-    background-color: $bg-main;
-    border: none;
-    color: $accent-primary;
-    padding: 8px 15px;
-    text-align: center;
-    font-size: 16px;
+.nav-list > li { position: relative; }
+
+.nav-list a, .parent-toggle {
+    display: block;
+    padding: .45rem .7rem;
+    font-size: .88rem;
+    color: var(--text-muted);
+    border: 0;
+    border-radius: 4px;
     cursor: pointer;
-    text-decoration: none;
+    white-space: nowrap;
 }
 
-/* Dropdown */
+.nav-list a:hover,
+.nav-list a:focus,
+.parent-toggle:hover {
+    color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+/* Submenu */
 .dropdown-content {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: .3rem;
     display: none;
     position: absolute;
-    background-color: $bg-main;
-    min-width: 100%;
     top: 100%;
     left: 0;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    min-width: 11rem;
+    background-color: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
 }
 
-.dropdown-content a {
-    color: $accent-primary;
-    padding: 8px 15px;
-    display: block;
-    text-decoration: none;
+.dropdown:hover .dropdown-content,
+.dropdown.show .dropdown-content { display: block; }
+
+/* Ferramentas: idioma e tema */
+.nav-tools {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    padding-left: .75rem;
+    border-left: 1px solid var(--border);
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
+.lang-switch {
+    font-size: .8rem;
+    color: var(--text-muted);
+    padding: .3rem .5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
 }
 
-@media print, screen and (max-width: 480px) {
-    nav {
-        display: block;
+.lang-switch:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1;
+    padding: .3rem .5rem;
+    cursor: pointer;
+}
+
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 1.1rem;
+    padding: .3rem .6rem;
+    cursor: pointer;
+}
+
+/* Mobile */
+@media screen and (max-width: 860px) {
+    .nav-toggle { display: inline-block; }
+
+    .site-header .bar { flex-wrap: wrap; }
+
+    .site-nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .25rem;
+        padding-bottom: .75rem;
     }
+
+    .site-nav.show { display: flex; }
 
     .nav-list {
-        display: block;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
     }
 
-    .nav-list > li {
-        display: block;
-    }
+    .nav-list a, .parent-toggle { padding: .6rem .5rem; }
 
     .dropdown-content {
         position: static;
+        border: 0;
         box-shadow: none;
+        padding: 0 0 0 1rem;
+        display: none;
+        min-width: 0;
     }
-}
 
-/* Hamburger (hidden on desktop) */
-#nav-toggle {
-  display: none;
-  background: $bg-main;
-  border: none;
-  color: $accent-primary;
-  font-size: 24px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.show .dropdown-content { display: block; }
 
-@media screen and (max-width: 768px) {
-  #nav-toggle {
-    display: inline-block;
-  }
-
-  .nav-list {
-    display: none; /* hidden by default */
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .nav-list.show {
-    display: flex;
-  }
-
-  .nav-list > li {
-    display: block;
-  }
-
-  .dropdown-content {
-    position: static;
-    box-shadow: none;
-    display: none;
-  }
-
-  .dropdown.show .dropdown-content {
-    display: block;
-  }
-
-  nav a, nav a:link, nav a:visited, .parent-toggle {
-    display: block;
-    cursor: pointer;
-    padding: 8px 15px;
-    font-family: $font-regular;
-    color: $accent-primary;
-    background-color: $bg-main;
-  }
-
-  .nav-list > li {
-    .dropdown-content a, &:hover .dropdown-content a {
-      background-color: $accent-primary;  
-      color: $bg-main;
+    .nav-tools {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+        padding: .6rem 0 0;
     }
-}
 }

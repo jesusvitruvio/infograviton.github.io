@@ -1,23 +1,76 @@
-/* Colors */
-$bg-light: #2a2a2a;
-$bg-main: #202020;
-$bg-dark: #1c1c1c;
-$bg-darker: #151515;
+/* Paleta em custom properties: o alternador de tema troca apenas o valor,
+   sem recompilar nada. Claro é o padrão; escuro entra com [data-theme="dark"]
+   no <html>, definido pelo botão ou pela preferência do sistema. */
 
-$text-main: #f0e7d5;
-$text-muted: #b6b6b6;
-$text-light: #e8e8e8;
+:root {
+    --bg: #ffffff;
+    --bg-surface: #f6f6f4;
+    --bg-raised: #ffffff;
+    --border: #e2e1dc;
 
-$accent-primary: #f26a49;
-$accent-secondary: #f19e58;
-$accent-visited: #f0be52;
+    --text: #1b1b1a;
+    --text-muted: #5f5e59;
+    --text-faint: #8a8983;
 
-/* Fonts */
-$font-light: 'MontserratLight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$font-regular: 'MontserratRegular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$font-semibold: 'MontserratSemiBold', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$font-bold: 'MontserratBold', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --accent: #14507d;
+    --accent-hover: #c2562f;
+    --accent-visited: #5b3f8c;
+    --accent-soft: #e9eef4;
 
-/* Sizes */
-$base-font-size: 14px;
-$base-line-height: 1.5;
+    --header-bg: rgba(255, 255, 255, 0.93);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    /* Tipografia
+     *
+     * Uma única família, com pesos reais. O esquema anterior tinha uma família
+     * por peso ('MontserratLight', 'MontserratSemiBold'…) porque cada arquivo
+     * .otf era declarado separadamente; a Inter é fonte variável, então basta
+     * pedir font-weight.
+     *
+     * Para voltar à Montserrat, que continua declarada em _fonts.scss e
+     * versionada em assets/fonts/, troque a linha abaixo por:
+     *   --font-sans: 'MontserratRegular', 'Helvetica Neue', Helvetica, sans-serif;
+     * e remova o <link> do Google Fonts em _layouts/default.html. */
+    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
+                 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --base-size: 16.5px;
+    --line-height: 1.62;
+
+    /* Recuo de primeira linha do texto corrido. O padrão é zero: na prática
+       editorial em inglês, parágrafos na web são separados por espaço, não
+       por recuo. O português recebe recuo na regra abaixo. */
+    --indent-para: 0;
+
+    /* Medidas */
+    --measure: 46rem;
+    /* largura confortável de leitura */
+    --wide: 72rem;
+    /* largura da barra e das grades */
+}
+
+/* Português: recuo de 1,25 cm recomendado pela ABNT, ≈ 2.8em neste corpo.
+   O inglês fica sem recuo, conforme o padrão da tipografia anglo-saxã na web. */
+html[lang^="pt"] {
+    --indent-para: 0.0em;
+}
+
+:root[data-theme="dark"] {
+    --bg: #17191c;
+    --bg-surface: #1e2125;
+    --bg-raised: #22262b;
+    --border: #32363c;
+
+    --text: #e9e7e2;
+    --text-muted: #a9a79f;
+    --text-faint: #7d7b74;
+
+    --accent: #7fb3e0;
+    --accent-hover: #f0906a;
+    --accent-visited: #b6a0dd;
+    --accent-soft: #232a33;
+
+    --header-bg: rgba(23, 25, 28, 0.93);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}

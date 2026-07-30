@@ -1,16 +1,7 @@
-{%- assign pubstate = include.pubstate -%}
-
-{%- case pubstate -%}
-    {%- when 'inpreparation' -%}
-        In preparation
-    {%- when 'submitted' -%}
-        Submitted
-    {%- when 'forthcoming' -%}
-        Forthcoming
-    {%- when 'inpress' -%}
-        In press
-    {%- when 'unpublished' -%}
-        Unpublished
-    {%- when 'prepublished' -%}
-        Pre-published
-{%- endcase -%}
+{%- comment -%}
+Estado da publicação, no idioma da página. Os rótulos vêm de
+_data/i18n.yml → <lang>.pubstate, e não fixos aqui, para que a versão em
+português não exiba "Forthcoming".
+{%- endcomment -%}
+{%- assign t = site.data.i18n[page.lang] | default: site.data.i18n.en -%}
+{{- t.pubstate[include.pubstate] -}}

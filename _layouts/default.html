@@ -1,16 +1,36 @@
+{%- assign t = site.data.i18n[page.lang] -%}
+{%- assign other = site.data.i18n[t.other] -%}
 <!doctype html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="{{ t.locale }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    {% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }} · {% endif %}{{ t.site_short }} — {{ t.site_title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=' | append: site.github.build_revision | relative_url }}"><!-- CSS -->
+    <!-- Inter (fonte variável). É a única dependência externa do site; para
+         eliminá-la, baixe os .woff2 para assets/fonts/, declare-os em
+         _sass/base/_fonts.scss e remova estas três linhas. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap">
 
-    <!-- Scripts -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+    <!-- Aplica o tema salvo antes da pintura, evitando o flash de cor -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('giq-theme');
+          var dark = saved ? saved === 'dark'
+                   : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- MathJax -->
     <script>
       MathJax = {
@@ -22,62 +42,131 @@
       };
     </script>
     <script id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-    </script>
-
-    <!-- Mobile Hamburger Toggle -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const navToggle = document.getElementById('nav-toggle');
-        const navList = document.querySelector('.nav-list');
-
-        navToggle.addEventListener('click', () => {
-          navList.classList.toggle('show');
-        });
-
-        document.querySelectorAll('.parent-toggle').forEach(toggle => {
-          toggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggle.parentElement.classList.toggle('show');
-          });
-        });
-      });
-    </script>
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   </head>
 
   <body>
-    <!-- Navigation -->
-    <nav id="Menu">
-      <button id="nav-toggle" aria-label="Toggle menu">☰</button>
-      <ul class="nav-list">
-        <li><a href="{{ site.url }}">Home</a></li>
+    <header class="site-header">
+      <div class="bar">
+        <a class="brand" href="{{ t.paths.home | relative_url }}">
+          <span class="brand-short">{{ t.site_short }}</span>
+          <span class="brand-full">{{ t.site_title }}</span>
+        </a>
 
-        <li class="dropdown">
-          <a href="#" class="parent-toggle">List of Seminars</a>
-          <ul class="dropdown-content">
-            <li><a href="{{ site.url }}/upcoming">Upcoming</a></li>
-            <li><a href="{{ site.url }}/past">Past</a></li>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+
+        <nav class="site-nav" id="site-nav">
+          <ul class="nav-list">
+            <li><a href="{{ t.paths.home | relative_url }}">{{ t.nav.home }}</a></li>
+            <li><a href="{{ t.paths.members | relative_url }}">{{ t.nav.members }}</a></li>
+            <li class="dropdown">
+              <a href="#" class="parent-toggle" aria-haspopup="true" aria-expanded="false">{{ t.nav.research }}</a>
+              <ul class="dropdown-content">
+                <li><a href="{{ t.paths.research | relative_url }}">{{ t.nav.branches }}</a></li>
+                <li><a href="{{ t.paths.publications | relative_url }}">{{ t.nav.publications }}</a></li>
+                <li><a href="{{ t.paths.theses | relative_url }}">{{ t.nav.theses }}</a></li>
+                <li><a href="{{ t.paths.dissertations | relative_url }}">{{ t.nav.dissertations }}</a></li>
+                <li><a href="{{ t.paths.monographs | relative_url }}">{{ t.nav.monographs }}</a></li>
+              </ul>
+            </li>
+            <li><a href="{{ t.paths.teaching | relative_url }}">{{ t.nav.teaching }}</a></li>
+            <li class="dropdown">
+              <a href="#" class="parent-toggle" aria-haspopup="true" aria-expanded="false">{{ t.nav.seminars }}</a>
+              <ul class="dropdown-content">
+                <li><a href="{{ t.paths.upcoming | relative_url }}">{{ t.nav.upcoming }}</a></li>
+                <li><a href="{{ t.paths.past | relative_url }}">{{ t.nav.past }}</a></li>
+                <li><a href="{{ t.paths.suggestions | relative_url }}">{{ t.nav.suggestions }}</a></li>
+              </ul>
+            </li>
+            <li><a href="{{ t.paths.join | relative_url }}">{{ t.nav.join }}</a></li>
           </ul>
-        </li>
 
-        <li><a href="{{ site.url }}/suggestions/">Suggestions</a></li>
-      </ul>
-    </nav>
+          <div class="nav-tools">
+            {%- comment -%}
+              Destino da troca de idioma. Páginas institucionais declaram `alt`
+              no front matter. Seminários não têm contraparte traduzida — ficam
+              no idioma em que foram apresentados —, então o leitor vai para o
+              arquivo de seminários do outro idioma, não para a home.
+            {%- endcomment -%}
+            {%- if page.alt -%}
+              {%- assign switch_to = page.alt -%}
+            {%- elsif page.collection == 'seminars' -%}
+              {%- assign switch_to = other.paths.past -%}
+            {%- else -%}
+              {%- assign switch_to = other.paths.home -%}
+            {%- endif -%}
+            <a class="lang-switch" href="{{ switch_to | relative_url }}"
+               hreflang="{{ other.locale }}">{{ t.other_label }}</a>
+            <button id="theme-toggle" class="theme-toggle"
+                    aria-label="{{ t.ui.theme_toggle }}" title="{{ t.ui.theme_toggle }}">
+              <span aria-hidden="true">◐</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
 
-    <!-- Main Content -->
-    <div class="wrapper">
-      <section>
-        <div  id="title">
-          <h1 style="font-weight: 500">{{ site.title | default: site.github.repository_name }}</h1>
-          <p>{{ site.description | default: site.github.project_tagline }}</p>
-          <hr>
-          <span class="credits left">Hosted on GitHub Pages</span>
-          <span class="credits right">Theme based on "Midnight", by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
-        </div>
-        
-        {{ content }}
+    <main id="main" class="wrapper">
+      {%- if page.hero %}
+      <div class="hero">
+        <h1 class="hero-title">{{ page.hero }}</h1>
+        {%- if page.hero_sub %}<p class="hero-sub">{{ page.hero_sub }}</p>{% endif %}
+      </div>
+      {%- elsif page.title %}
+      {%- comment -%}
+        Único lugar do site que imprime o título da página. `smartify` converte
+        aspas retas em tipográficas e hífens duplos em travessões — importante
+        para os títulos de seminários, muitos deles com citações.
+      {%- endcomment -%}
+      <h1 class="page-title">{{ page.title | smartify }}</h1>
+      {%- endif %}
 
-      </section>
-    </div>
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="bar">
+        <p>
+          <strong>{{ t.site_title }}</strong><br>
+          <a href="{{ site.institution_url }}">{{ site.institution }}</a> · {{ site.city }}
+        </p>
+        <p class="footer-right">
+          <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
+          <span class="muted">{{ t.ui.supported_by }}: FAPESP · CAPES · CNPq</span>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var navToggle = document.getElementById('nav-toggle');
+        var nav = document.getElementById('site-nav');
+        if (navToggle && nav) {
+          navToggle.addEventListener('click', function () {
+            var open = nav.classList.toggle('show');
+            navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+        }
+
+        document.querySelectorAll('.parent-toggle').forEach(function (toggle) {
+          toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            var open = toggle.parentElement.classList.toggle('show');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+        });
+
+        var themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function () {
+            var root = document.documentElement;
+            var dark = root.getAttribute('data-theme') === 'dark';
+            if (dark) { root.removeAttribute('data-theme'); }
+            else { root.setAttribute('data-theme', 'dark'); }
+            try { localStorage.setItem('giq-theme', dark ? 'light' : 'dark'); } catch (e) {}
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

@@ -1,34 +1,52 @@
 ---
 layout: default
 ---
-<h1>{{ page.title | smartify }}</h1>
-<p>{% include typeset_date_lang.html date=page.date timezone=page.timezone %}</p>
-<p>{% include authorlist.html authorlist=page.speaker %}</p>
+{%- assign t = site.data.i18n[page.lang] -%}
 
-{{ page.content | markdownify }}
+{%- comment -%}
+O título NÃO é impresso aqui: o layout `default` já o renderiza a partir de
+page.title. Repeti-lo neste molde é o que causava o título duplicado.
+{%- endcomment -%}
+<article class="seminar">
+  <p class="seminar-meta">
+    {% include typeset_date_lang.html date=page.date lang=page.language %}
+    {%- if page.speaker %}<br>{% include authorlist.html authorlist=page.speaker %}{% endif %}
+  </p>
 
-<ul>
-{% for key in page.bibliography %}
-  {% assign paper = nil %}
-  {% for p in site.bibliography %}
-    {% if p.slug == key %}
-      {% assign paper = p %}
-    {% endif %}
-  {% endfor %}
+  <div class="prose">
+    {{ page.content | markdownify }}
+  </div>
 
-  {% if paper %}
-    <li>{% include bibitem.html entry=paper %}</li>
-  {% else %}
-    <li><strong>Missing entry:</strong> {{ key }}</li>
-  {% endif %}
-{% endfor %}
-</ul>
+  {%- assign refs = page.bibliography -%}
+  {%- if refs and refs.size > 0 %}
+  <section class="refs">
+    <h2>References</h2>
+    <ul class="biblist">
+    {% for key in refs %}
+      {% assign paper = nil %}
+      {% for p in site.bibliography %}
+        {% if p.slug == key %}{% assign paper = p %}{% endif %}
+      {% endfor %}
+      {% if paper %}
+        <li>{% include bibitem.html entry=paper %}</li>
+      {% else %}
+        <li><strong>Missing entry:</strong> {{ key }}</li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  </section>
+  {%- endif %}
 
-{%- if page.resources -%}
-<p><strong>Attachments:</strong></p>
-  <ul>
-  {% for resource in page.resources %}
-      <li><a href="{{ resource.src }}" target="_blank">{{ resource.title }}</a></li>
-  {% endfor %}
-  </ul>
-{%- endif -%}
+  {%- if page.resources %}
+  <section class="refs">
+    <h2>Attachments</h2>
+    <ul>
+    {% for resource in page.resources %}
+      <li><a href="{{ resource.src }}" target="_blank" rel="noopener">{{ resource.title }}</a></li>
+    {% endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  <p class="backlink"><a href="{{ t.paths.past | relative_url }}">← {{ t.nav.seminars }}</a></p>
+</article>

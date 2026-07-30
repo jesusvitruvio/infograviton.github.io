@@ -1,13 +1,18 @@
 ---
 layout: default
+lang: en
+title: Past Seminars
+alt: /pt/anteriores/
+description: Complete archive of the InfoGraviton journal club.
 ---
-{%- assign past = site.seminars | sort: 'date' | reverse | where_exp:"seminar","seminar.date < site.time" %}
-<h1>Past Seminars</h1>
+{%- assign past = site.seminars | sort: 'date' | reverse | where_exp: "s", "s.date < site.time" -%}
 
-<p>We have had {{ past.size }} seminars so far! Here is the complete list.</p>
+<div class="prose">
+  <p>The complete archive of the journal club — {{ past.size }} talks so far.</p>
+</div>
 
-<ul>
-{% for seminar in past %}
-    {% include include_seminar.html seminar=seminar %}
-{% endfor %}
+<ul class="seminar-list">
+  {%- for seminar in past %}
+  {% include include_seminar.html seminar=seminar %}
+  {%- endfor %}
 </ul>

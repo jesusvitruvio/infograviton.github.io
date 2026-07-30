@@ -1,0 +1,46 @@
+{%- comment -%}
+Lista os trabalhos da coleção _theses de um único nível, do mais recente ao
+mais antigo.
+
+Todo texto sai no idioma da página: título, programa e instituição têm campos
+`_en`/`_pt` no arquivo da tese, e o include escolhe conforme `lang`. Nada de
+título original nem de idioma do trabalho — a página não mistura idiomas.
+
+Parâmetros: degree (phd|masters|undergrad), lang (en|pt)
+{%- endcomment -%}
+{%- assign lang = include.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign items = site.theses | where: 'degree', include.degree | sort: 'date' | reverse -%}
+
+{%- if items.size > 0 %}
+<ul class="thesis-list">
+  {%- for th in items -%}
+    {%- if lang == 'pt' -%}
+      {%- assign title = th.title_pt | default: th.title -%}
+      {%- assign program = th.program_pt | default: th.program -%}
+      {%- assign institution = th.institution_pt | default: th.institution -%}
+    {%- else -%}
+      {%- assign title = th.title_en | default: th.title -%}
+      {%- assign program = th.program_en | default: th.program -%}
+      {%- assign institution = th.institution_en | default: th.institution -%}
+    {%- endif %}
+  <li class="thesis">
+    <h3 class="thesis-title">
+      {%- if th.src -%}
+      <a href="{{ th.src }}" target="_blank" rel="noopener">{{ title }}</a>
+      {%- else -%}
+      {{ title }}
+      {%- endif -%}
+    </h3>
+    <p class="thesis-meta">
+      <strong>{{ th.author }}</strong> · {{ th.year }}<br>
+      {{ t.ui.advisor }}: {% include authorlist.html authorlist=th.advisor %}<br>
+      {{ program }}, {{ institution }}
+      {%- if th.pages %} · {{ th.pages }} {{ t.ui.pages }}{% endif -%}
+    </p>
+  </li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="muted">{{ t.ui.no_theses }}</p>
+{%- endif -%}

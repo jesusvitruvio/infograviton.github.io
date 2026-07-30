@@ -1,13 +1,19 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+/* CSS próprio do site — o tema jekyll-theme-midnight não é mais importado.
+ *
+ * Usa-se `@use` e não `@import`: o Dart Sass depreciou o @import e vai removê-lo
+ * na versão 3.0. A troca é direta aqui porque os parciais só declaram regras CSS
+ * e custom properties — nenhum deles expõe variável, mixin ou função de Sass que
+ * precisasse ser referenciada de fora com namespace. */
 
 /* Base */
-@import "base/variables";
-@import "base/fonts";
-@import "base/typography";
-@import "base/media";
+@use "base/variables";
+@use "base/fonts";
+@use "base/typography";
+@use "base/media";
 
 /* Layout */
-@import "layout/navigation";
+@use "layout/navigation";
+@use "layout/components";

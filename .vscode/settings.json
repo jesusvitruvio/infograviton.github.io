@@ -1,0 +1,16 @@
+{
+    // O formatador de HTML não entende front matter YAML nem Liquid:
+    // ao salvar, ele re-indenta o bloco entre os `---` e quebra o Jekyll.
+    "[html]": {
+        "editor.formatOnSave": false,
+        "editor.formatOnPaste": false,
+        "editor.formatOnType": false
+    },
+    "[yaml]": {
+        "editor.formatOnSave": false
+    },
+    "[markdown]": {
+        "editor.formatOnSave": false,
+        "files.trimTrailingWhitespace": false
+    }
+}

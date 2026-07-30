@@ -1,0 +1,61 @@
+{%- comment -%}
+Lista os itens da coleção _teaching de um tipo, do mais recente ao mais antigo.
+
+Todo texto sai no idioma da página: os campos têm par `_en`/`_pt`, com queda
+para o campo sem sufixo caso um deles falte.
+
+Parâmetros: kind (course|notes), lang (en|pt)
+{%- endcomment -%}
+{%- assign lang = include.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign items = site.teaching | where: 'kind', include.kind | sort: 'date' | reverse -%}
+
+{%- if items.size > 0 %}
+<ul class="teaching-list">
+  {%- for it in items -%}
+    {%- if lang == 'pt' -%}
+      {%- assign title = it.title_pt | default: it.title -%}
+      {%- assign venue = it.venue_pt | default: it.venue -%}
+      {%- assign level = it.level_pt | default: it.level -%}
+      {%- assign body = it.description_pt | default: it.description -%}
+    {%- else -%}
+      {%- assign title = it.title_en | default: it.title -%}
+      {%- assign venue = it.venue_en | default: it.venue -%}
+      {%- assign level = it.level_en | default: it.level -%}
+      {%- assign body = it.description_en | default: it.description -%}
+    {%- endif %}
+  <li class="teaching-item">
+    <h3 class="teaching-title">
+      {%- if it.src -%}
+      <a href="{{ it.src }}" target="_blank" rel="noopener">{{ title }}</a>
+      {%- else -%}
+      {{ title }}
+      {%- endif -%}
+    </h3>
+    <p class="teaching-meta">
+      {%- if it.instructor %}{% include authorlist.html authorlist=it.instructor %} · {% endif -%}
+      {{ it.term | default: it.year }}
+      {%- if level %} · {{ level }}{% endif -%}
+      {%- if venue %}<br>{{ venue }}{% endif -%}
+    </p>
+    {%- if body %}
+    <p class="teaching-desc">{{ body }}</p>
+    {%- endif %}
+    {%- if it.materials %}
+    <p class="teaching-materials">
+      {%- for m in it.materials -%}
+        {%- if lang == 'pt' -%}
+          {%- assign mlabel = m.title_pt | default: m.title -%}
+        {%- else -%}
+          {%- assign mlabel = m.title_en | default: m.title -%}
+        {%- endif -%}
+        <a href="{{ m.src }}" target="_blank" rel="noopener">{{ mlabel }}</a>
+      {%- endfor -%}
+    </p>
+    {%- endif %}
+  </li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="muted">{{ t.ui.no_teaching }}</p>
+{%- endif -%}

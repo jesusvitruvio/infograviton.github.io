@@ -1,22 +1,72 @@
 ---
 layout: default
+lang: en
+alt: /pt/
+hero: Quantum Gravitation and Information
+hero_sub: >-
+  A research group at the Federal University of ABC working on the interface
+  between general relativity, quantum field theory, and quantum information.
+description: >-
+  Research group on quantum gravitation and information at UFABC, Santo André,
+  Brazil. Members, research lines, seminars, and publications.
 ---
-<h1>Home</h1>
+{%- assign t = site.data.i18n[page.lang] -%}
 
-<p>This is the webpage for the InfoGraviton Journal Club. During the second quarter of 2025 (May–August) our meetings will (mostly) happen on Thursdays at 14:00 (America/Sao_Paulo). For questions, suggestions, and etc, contact <a href="https://aguiaralves.com">Níck</a>.</p>
+<div class="about">
+  <div class="prose about-text">
+  <h2>About us</h2>
 
-<h3>Upcoming Seminars</h3> 
-<ul>
-{% assign future = site.seminars | sort: 'date' | where_exp:"seminar","seminar.date > site.time" %}
-{% for seminar in future limit:3 %}
-    {% include include_seminar.html seminar=seminar %}
-{% endfor %}
+  <p>We study what happens when gravitation and quantum theory are taken
+    seriously at the same time. Our work sits at the interface between general
+    relativity, quantum field theory in curved spacetimes, and quantum information
+    theory — a place where questions about entropy, measurement, and the structure
+    of spacetime merge all together.</p>
+
+  <p>Concretely, we work on relativistic quantum information and communication 
+    in curved spacetimes, on the infrared structure of gravity and asymptotic symmetries, 
+    on black hole thermodynamics and entropy bounds, and on bottom-up approaches to low-energy quantum gravity.</p>
+
+  <p>The group is based at the <a href="{{ site.institution_url }}">Federal
+      University of ABC</a> in Santo André, Brazil, and is led by
+    <a href="https://lattes.cnpq.br/2705752886744456">André G. S. Landulfo</a>.
+    Our research is supported by FAPESP, CAPES, and CNPq.
+  </p>
+
+  <p>We run <strong>InfoGraviton</strong>, a weekly journal club on information,
+    quantum theory, and gravity. Its full archive of talks and reading suggestions
+    is on this site, and visitors are welcome.</p>
+  </div>
+
+  <figure class="about-figure">
+    <img src="{{ '/assets/img/banner-home.jpg' | relative_url }}"
+         width="1024" height="400" loading="lazy"
+         alt="Red and white triangular panel in a hall at the Federal University of ABC">
+    <figcaption>Red and white triangular panel in a hall at the Federal University of ABC.</figcaption>
+  </figure>
+</div>
+
+{%- assign future = site.seminars | sort: 'date' | where_exp: "s", "s.date > site.time" -%}
+<div class="section-head">
+  <h2>{{ t.ui.upcoming_seminars }}</h2>
+  <a href="{{ t.paths.upcoming | relative_url }}">{{ t.ui.all_seminars }} →</a>
+</div>
+{%- if future.size > 0 %}
+<ul class="seminar-list">
+  {%- for seminar in future limit: 3 %}
+  {% include include_seminar.html seminar=seminar %}
+  {%- endfor %}
 </ul>
+{%- else %}
+<p class="muted">{{ t.ui.no_seminars }}</p>
+{%- endif %}
 
-<h3>Recent Seminars</h3> 
-<ul>
-{% assign past = site.seminars | sort: 'date' | reverse | where_exp:"seminar","seminar.date < site.time" %}
-{% for seminar in past limit:2 %}
+{%- assign past = site.seminars | sort: 'date' | reverse | where_exp: "s", "s.date < site.time" -%} <div
+  class="section-head">
+  <h2>{{ t.ui.recent_seminars }}</h2>
+  <a href="{{ t.paths.past | relative_url }}">{{ t.ui.all_seminars }} →</a>
+  </div>
+  <ul class="seminar-list">
+    {%- for seminar in past limit: 3 %}
     {% include include_seminar.html seminar=seminar %}
-{% endfor %}
-</ul>
+    {%- endfor %}
+  </ul>

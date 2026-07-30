@@ -1,0 +1,36 @@
+{%- assign m = include.member -%}
+{%- assign lang = include.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- if lang == 'pt' -%}
+  {%- assign blurb = m.blurb_pt -%}
+{%- else -%}
+  {%- assign blurb = m.blurb_en -%}
+{%- endif -%}
+
+<li class="member">
+  <div class="member-photo">
+    {%- assign photo = '/assets/img/members/' | append: m.slug | append: '.jpg' -%}
+    {%- assign known = site.static_files | where: 'path', photo | first -%}
+    {%- if known -%}
+      <img src="{{ photo | relative_url }}" alt="{{ m.name }}" loading="lazy">
+    {%- else -%}
+      {%- assign parts = m.name | split: ' ' -%}
+      {%- assign ini = parts[0] | slice: 0 -%}
+      {%- assign last = parts | last | slice: 0 -%}
+      <span class="member-initials" aria-hidden="true">{{ ini }}{{ last }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="member-body">
+    <h3 class="member-name">{{ m.name }}</h3>
+    <p class="member-affil">
+      {{ m.institution }}{%- if m.funding %} · {{ m.funding }}{% endif -%}
+    </p>
+    {%- if blurb %}<p class="member-blurb">{{ blurb }}</p>{% endif %}
+    <p class="member-links">
+      {%- if m.website %}<a href="{{ m.website }}" target="_blank" rel="noopener">{{ t.ui.website }}</a>{% endif -%}
+      {%- if m.lattes %}<a href="https://lattes.cnpq.br/{{ m.lattes }}" target="_blank" rel="noopener">{{ t.ui.lattes }}</a>{% endif -%}
+      {%- if m.orcid %}<a href="https://orcid.org/{{ m.orcid }}" target="_blank" rel="noopener">ORCID</a>{% endif -%}
+    </p>
+  </div>
+</li>

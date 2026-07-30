@@ -1,4 +1,5 @@
 ---
+group: true
 type: article
 author:
   - name: André G. S. Landulfo

@@ -5,6 +5,11 @@ _site/
 
 # Bundler
 .bundle/
+vendor/bundle/
+
+# Backup do lock antigo (github-pages), mantido apenas localmente
+Gemfile.lock.bak-*
 
 # OS/editor junk
 .DS_Store
+Thumbs.db

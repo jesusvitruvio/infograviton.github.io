@@ -1,10 +1,24 @@
-theme: jekyll-theme-midnight
-title: InfoGraviton
-description: journal club on aspects of information, quantum theory, and gravity
+# O tema jekyll-theme-midnight foi removido: o site agora traz o próprio CSS
+# em _sass/, com tema claro e alternador de modo escuro.
+
+title: GIQ — Gravitação e Informação Quântica
+description: >-
+  Research group on quantum gravitation and information at the Federal
+  University of ABC. Members, research, seminars, and publications.
+lang: en
+short_name: GIQ
+
 github:
   is_project_page: false
 future: true
 timezone: America/Sao_Paulo
+
+# Dados institucionais usados nas páginas e no rodapé
+email: andre.landulfo@ufabc.edu.br
+institution: Universidade Federal do ABC
+institution_short: UFABC
+institution_url: https://www.ufabc.edu.br/
+city: Santo André, SP
 
 collections:
   seminars:
@@ -13,15 +27,41 @@ collections:
     output: false
   bibliography:
     output: false
-    
+  # Teses, dissertações e monografias concluídas no grupo. Sem página
+  # individual: a listagem em /research/theses e afins mostra todos os dados.
+  theses:
+    output: false
+  # Disciplinas, minicursos e notas de aula. Sem página individual: a listagem
+  # em /teaching e /pt/ensino mostra tudo e aponta para os materiais.
+  teaching:
+    output: false
+
 defaults:
   - scope:
       path: ""
     values:
       layout: "default"
+      lang: "en"
+  - scope:
+      path: "pt"
+    values:
+      layout: "default"
+      lang: "pt"
   - scope:
       path: ""
       type: "seminars"
     values:
       layout: "seminar"
+      lang: "en"
 
+sass:
+  style: compressed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Gemfile.lock.bak-github-pages
+  - README.md
+  - assets/img/members/README.md   # instruções internas, não é página do site
+  - vendor
+  - .vscode
